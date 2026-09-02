@@ -1,0 +1,2257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BooyahConfig — Sensibilidad Free Fire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0a0b0d;
+    --panel:#131417;
+    --panel-raised:#1a1c20;
+    --line:#25272c;
+    --blaze:#c9a869;
+    --blaze-dim:#c9a86920;
+    --teal:#c9a869;
+    --teal-dim:#c9a86920;
+    --danger:#a85248;
+    --gold:#c9a869;
+    --accent:#c9a869;
+    --text:#e8edf2;
+    --muted:#7c8894;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 50% 0%, #1c180f4d 0%, transparent 50%),
+      var(--void);
+    color:var(--text);
+    font-family:'Manrope',sans-serif;
+    min-height:100vh;
+    padding:0 0 60px;
+    position:relative;
+  }
+  body::after{
+    content:'';
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity:0.05;
+    mix-blend-mode:overlay;
+    z-index:999;
+  }
+  h1,h2,h3,.mono-num,.chip,.style-card h3,.dpi-readout,select,.device-tier-label{font-family:'Rajdhani',sans-serif;}
+
+  /* ---------- TOPBAR / BRAND ---------- */
+  .topbar{
+    display:flex;
+    align-items:center;
+    padding:18px 24px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .brand-mark{width:42px;height:46px;flex:none;}
+  .brand-word{
+    font-family:'Rajdhani',sans-serif;
+    font-size:18px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    color:var(--text);
+  }
+  .brand-word span{color:var(--muted);font-weight:600;}
+
+  .intro{
+    max-width:720px;
+    margin:0 auto;
+    padding:40px 24px 8px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+    padding-bottom:32px;
+  }
+  .intro-eyebrow{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:600;
+    letter-spacing:3px;
+    font-size:12px;
+    color:var(--muted);
+    text-transform:uppercase;
+    margin:0 0 12px;
+  }
+  .intro h1{
+    font-family:'Manrope',sans-serif;
+    font-size:clamp(20px,3vw,26px);
+    font-weight:600;
+    line-height:1.45;
+    letter-spacing:0.1px;
+    color:var(--text);
+    margin:0;
+  }
+
+  /* ---------- TABS ---------- */
+  .tabs{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    padding:0 24px 28px;
+    border-bottom:1px solid var(--line);
+  }
+  .tab-btn{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--muted);
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:0.4px;
+    padding:9px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .tab-btn:hover{color:var(--text);border-color:#3a3d45;}
+  .tab-btn.active{
+    color:var(--void);
+    background:var(--accent);
+    border-color:var(--accent);
+  }
+
+  /* ---------- COMBOS ---------- */
+  .preset-cards{display:flex;flex-direction:column;gap:10px;}
+  .preset-card{
+    border:1px solid var(--line);
+    background:var(--panel-raised);
+    border-radius:10px;
+    padding:14px 16px;
+  }
+  .preset-card h3{
+    margin:0 0 4px;
+    font-family:'Rajdhani',sans-serif;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:0.3px;
+    color:var(--text);
+  }
+  .preset-card .preset-picks{
+    font-size:13px;
+    color:var(--accent);
+    font-weight:600;
+    margin:0 0 6px;
+  }
+  .preset-card p.preset-note{
+    margin:0 0 10px;
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.45;
+  }
+  .preset-card button{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.3px;
+    padding:7px 14px;
+    border-radius:7px;
+    cursor:pointer;
+  }
+  .preset-card button:hover{border-color:var(--accent);color:var(--accent);}
+
+  .combo-slots{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
+  .combo-slot label{
+    display:block;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.8px;
+    color:var(--muted);
+    font-weight:700;
+    font-family:'Rajdhani',sans-serif;
+    margin-bottom:6px;
+  }
+  #comboName{
+    width:100%;
+    padding:11px 12px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--panel-raised);
+    color:var(--text);
+    font-size:15px;
+    font-family:'Manrope';
+  }
+  #saveComboBtn{
+    width:100%;
+    padding:13px;
+    border-radius:10px;
+    border:none;
+    background:var(--accent);
+    color:var(--void);
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    cursor:pointer;
+  }
+  #saveComboBtn:hover{filter:brightness(1.08);}
+
+  .saved-combo{
+    border-bottom:1px solid var(--line);
+    padding:12px 0;
+  }
+  .saved-combo:last-child{border-bottom:none;}
+  .saved-combo-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:4px;
+  }
+  .saved-combo-top strong{font-size:15px;color:var(--text);font-family:'Rajdhani';}
+  .saved-combo-picks{font-size:12.5px;color:var(--muted);line-height:1.5;}
+  .saved-combo-del{
+    background:none;
+    border:none;
+    color:var(--muted);
+    cursor:pointer;
+    font-size:16px;
+    line-height:1;
+    padding:2px 6px;
+  }
+  .saved-combo-del:hover{color:var(--danger);}
+  .empty-note{color:var(--muted);font-size:13px;font-family:'Manrope';}
+
+
+  /* ---------- COMBO UI MEJORADA ---------- */
+  .combo-hero{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;margin-bottom:14px;border:1px solid var(--line);background:linear-gradient(135deg,var(--panel-raised),#15171b);border-radius:12px;}
+  .combo-hero strong{font-family:'Rajdhani';font-size:18px;letter-spacing:.4px;}
+  .combo-hero span{display:block;color:var(--muted);font-size:12px;margin-top:3px;}
+  .combo-badge{font-family:'Rajdhani';font-weight:700;font-size:12px;color:var(--void);background:var(--accent);padding:6px 9px;border-radius:7px;white-space:nowrap;}
+  .combo-builder{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .skill-slot{border:1px solid var(--line);background:var(--panel-raised);border-radius:10px;padding:10px;}
+  .skill-slot label{display:block;font:700 10px 'Rajdhani';letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+  .skill-slot select{font-size:13px;padding:9px;}
+  .preset-card{transition:transform .15s,border-color .15s;}
+  .preset-card:hover{transform:translateY(-1px);border-color:#3a3d45;}
+  .preset-card .preset-picks{line-height:1.5;}
+  .preset-card .preset-meta{font-size:11px;color:var(--muted);margin:0 0 9px;}
+  .preset-card button{width:100%;}
+  .saved-combo{padding:13px 0;}
+  .saved-combo-picks b{color:var(--text);}
+  .saved-combo-actions{display:flex;gap:7px;margin-top:8px;}
+  .saved-combo-actions button{background:none;border:1px solid var(--line);border-radius:7px;color:var(--muted);font:700 11px 'Rajdhani';padding:6px 9px;cursor:pointer;}
+  .saved-combo-actions button:hover{border-color:var(--accent);color:var(--accent);}
+  @media(max-width:560px){.combo-builder{grid-template-columns:1fr}.combo-hero{align-items:flex-start;flex-direction:column}.combo-badge{align-self:flex-start}}
+
+
+  /* ---------- CREDIT + LOGIN ---------- */
+  .site-credit-wrap{position:fixed;right:16px;bottom:14px;z-index:99999;display:flex;align-items:center;gap:10px;padding:0;margin:0;visibility:visible;opacity:1;}
+  .site-credit{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.3px;color:#fff;opacity:1;pointer-events:none;user-select:none;text-shadow:0 1px 3px rgba(0,0,0,.7);white-space:nowrap;}
+  .login-btn{display:inline-block!important;background:#ffd21f!important;border:2px solid #ffd21f!important;border-radius:8px;color:#111!important;font:800 12px Rajdhani,sans-serif;padding:7px 13px;cursor:pointer;letter-spacing:.7px;line-height:1;box-shadow:0 2px 10px rgba(0,0,0,.3);opacity:1!important;visibility:visible!important;}
+  .login-btn:hover{background:#ffe45c!important;border-color:#ffe45c!important;color:#111!important;transform:translateY(-1px);}
+  .donate-btn{display:inline-block!important;background:#ff5a5f!important;border:2px solid #ff5a5f!important;border-radius:8px;color:#fff!important;font:800 12px Rajdhani,sans-serif;padding:7px 13px;cursor:pointer;letter-spacing:.7px;line-height:1;box-shadow:0 2px 10px rgba(0,0,0,.3);}
+  .donate-btn:hover{background:#ff7478!important;border-color:#ff7478!important;transform:translateY(-1px);}
+  .donate-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(5px);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;}
+  .donate-overlay.open{display:flex;}
+  .donate-box{width:min(390px,100%);background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.45);text-align:center;}
+  .donate-box h2{margin:0 0 8px;font-size:22px;}
+  .donate-box p{margin:0 0 18px;color:var(--muted);font-size:13px;line-height:1.5;}
+  .donate-close{float:right;background:none;border:0;color:var(--muted);font-size:22px;cursor:pointer;}
+  .donate-note{border:1px solid var(--line);background:var(--panel-raised);border-radius:10px;padding:12px;color:var(--text);font-size:12px;}
+  .login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(5px);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;}
+  .login-overlay.open{display:flex;}
+  .login-box{width:min(390px,100%);background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.45);}
+  .login-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+  .login-head h2{margin:0;font-size:20px;}
+  .login-close{background:none;border:0;color:var(--muted);font-size:22px;cursor:pointer;}
+  .login-tabs{display:flex;gap:6px;margin-bottom:16px;}
+  .login-tab{flex:1;background:var(--bg);border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:9px;cursor:pointer;font-weight:700;}
+  .login-tab.active{color:var(--accent);border-color:var(--accent);}
+  .login-field{margin-bottom:12px;}
+  .login-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;}
+  .login-field input{width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:11px;font:inherit;}
+  .login-submit{width:100%;margin-top:5px;background:var(--accent);color:#111;border:0;border-radius:8px;padding:11px;font-weight:800;cursor:pointer;}
+  .login-msg{min-height:18px;margin-top:10px;font-size:12px;color:var(--muted);text-align:center;}
+  .login-user{font-size:12px;color:var(--accent);font-weight:700;}
+  @media(max-width:560px){.site-credit-wrap{right:9px;bottom:8px}.site-credit{font-size:11px}.login-btn{padding:6px 9px}}
+  /* ---------- VIP ---------- */
+  .vip-section{width:min(1100px,calc(100% - 28px));margin:22px auto 0;padding:0;}
+  .vip-card{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(255,211,54,.12),var(--panel));border:1px solid rgba(255,211,54,.45);border-radius:18px;padding:20px 22px;box-shadow:0 12px 35px rgba(0,0,0,.18);}
+  .vip-badge{display:inline-block;background:#ffd400;color:#151515;font:900 11px Rajdhani,sans-serif;letter-spacing:1px;border-radius:999px;padding:5px 10px;margin-bottom:8px;}
+  .vip-card h2{margin:0 0 5px;font-size:22px;}
+  .vip-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.55;}
+  .vip-options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px;}
+  .vip-option{background:var(--panel-raised);border:1px solid var(--line);border-radius:12px;padding:13px;}
+  .vip-option strong{display:block;margin-bottom:4px;font-size:13px;}
+  .vip-option span{display:block;color:var(--muted);font-size:11px;line-height:1.45;}
+  .vip-cta{margin-top:14px;padding:10px 12px;border-radius:10px;background:rgba(255,211,54,.08);border:1px dashed rgba(255,211,54,.4);font-size:12px;line-height:1.5;}
+  @media(max-width:700px){.vip-options{grid-template-columns:1fr;}}
+
+
+  /* ---------- LAYOUT ---------- */
+  .is-hidden{display:none !important;}
+
+  .grid{
+    max-width:1120px;
+    margin:36px auto 0;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns:1.15fr 1fr;
+    gap:28px;
+    align-items:start;
+  }
+  @media (max-width:860px){
+    .grid{grid-template-columns:1fr;}
+  }
+
+  .field-group{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 20px 22px;
+    margin-bottom:18px;
+  }
+  .field-group h2{
+    margin:0 0 14px;
+    font-size:16px;
+    font-weight:600;
+    letter-spacing:0.6px;
+    text-transform:uppercase;
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .field-group h2 .step-mark{
+    color:var(--blaze);
+    font-size:14px;
+  }
+
+
+  /* búsqueda rápida de dispositivos */
+  .device-search-wrap{margin-bottom:14px;position:relative;}
+  .device-search-wrap>label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600;margin-bottom:6px;}
+  .device-search-box{position:relative;}
+  .device-search-box .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-52%);font-size:22px;color:var(--muted);pointer-events:none;}
+  #deviceSearch{width:100%;box-sizing:border-box;padding:12px 14px 12px 38px;border-radius:9px;border:1px solid var(--line);background:var(--panel-raised);color:var(--text);font-size:14px;font-weight:600;outline:none;}
+  #deviceSearch::placeholder{color:var(--muted);font-weight:500;}
+  #deviceSearch:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(0,200,180,.08);}
+  .device-search-results{display:none;position:absolute;left:0;right:0;top:100%;margin-top:5px;z-index:50;max-height:260px;overflow:auto;background:var(--panel-raised);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.35);}
+  .device-search-results.open{display:block;}
+  .device-search-result{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;padding:10px 12px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--text);text-align:left;cursor:pointer;}
+  .device-search-result:last-child{border-bottom:0;}
+  .device-search-result:hover{background:var(--line);}
+  .device-search-result .result-name{font-weight:700;}
+  .device-search-result .result-brand{font-size:11px;color:var(--muted);white-space:nowrap;}
+  .device-search-empty{padding:13px;color:var(--muted);font-size:12px;}
+  .device-help-row{display:flex;justify-content:flex-end;margin-top:8px;}
+  .device-help-btn{background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:7px 11px;font:700 12px 'Rajdhani',sans-serif;cursor:pointer;transition:.15s;}
+  .device-help-btn:hover{color:var(--accent);border-color:var(--accent);}
+  .help-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(5px);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;}
+  .help-overlay.open{display:flex;}
+  .help-box{width:min(500px,100%);max-height:90vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.45);}
+  .help-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .help-head h2{margin:0;font-size:20px;}
+  .help-close{background:none;border:0;color:var(--muted);font-size:22px;cursor:pointer;}
+  .help-intro{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.5;}
+  .help-step{border:1px solid var(--line);background:var(--panel-raised);border-radius:10px;padding:11px 13px;margin-bottom:8px;}
+  .help-step strong{display:block;color:var(--text);font:700 14px 'Rajdhani',sans-serif;margin-bottom:4px;}
+  .help-step span{font-size:12.5px;color:var(--muted);line-height:1.45;}
+  .help-tip{margin:14px 0 0;padding:11px 13px;border-radius:10px;background:var(--blaze-dim);border:1px solid var(--blaze);font-size:12.5px;color:var(--text);line-height:1.5;}
+
+
+  /* selects (marca / modelo) */
+  .select-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .select-wrap{flex:1 1 180px;display:flex;flex-direction:column;gap:6px;}
+  .select-wrap label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+    color:var(--muted);
+    font-weight:600;
+  }
+  select{
+    width:100%;
+    padding:11px 12px;
+    border-radius:9px;
+    border:1px solid var(--line);
+    background:var(--panel-raised);
+    color:var(--text);
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:0.3px;
+    cursor:pointer;
+  }
+  select:disabled{opacity:0.45;cursor:not-allowed;}
+  select:focus-visible{outline:2px solid var(--teal);outline-offset:1px;}
+
+  .brand-note{
+    font-size:12px;
+    color:var(--muted);
+    margin:-6px 0 14px;
+    font-family:'Manrope';
+    line-height:1.4;
+  }
+
+  /* device spec card */
+  .device-card{
+    display:flex;
+    gap:16px;
+    align-items:center;
+    background:var(--panel-raised);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px;
+  }
+  .device-card .phone-icon{width:52px;height:96px;flex:none;}
+  .device-card .info{flex:1;min-width:0;}
+  .device-tier-label{
+    display:inline-block;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    padding:3px 9px;
+    border-radius:6px;
+    margin-bottom:6px;
+  }
+  .device-model-name{
+    font-size:16px;
+    font-weight:700;
+    margin:0 0 6px;
+    font-family:'Rajdhani';
+    letter-spacing:0.3px;
+  }
+  .device-spec-line{
+    font-size:12.5px;
+    color:var(--muted);
+    margin:0 0 2px;
+    font-family:'Manrope';
+  }
+  .device-spec-line b{color:var(--text);font-weight:600;}
+  .fps-row{
+    display:flex;
+    gap:14px;
+    margin-top:10px;
+  }
+  .fps-item{text-align:center;}
+  .fps-item .fps-val{font-family:'Rajdhani';font-weight:700;font-size:18px;color:var(--text);}
+  .fps-item .fps-tag{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;}
+  .fps-item.min .fps-val{color:var(--danger);}
+  .fps-item.std .fps-val{color:var(--gold);}
+  .fps-item.max .fps-val{color:var(--teal);}
+  .fps-disclaimer{
+    font-size:10.5px;
+    color:var(--muted);
+    margin-top:10px;
+    line-height:1.4;
+    font-family:'Manrope';
+  }
+
+  /* chips */
+  .chip-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .chip{
+    flex:1 1 auto;
+    min-width:100px;
+    text-align:center;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--panel-raised);
+    color:var(--muted);
+    font-weight:600;
+    letter-spacing:0.4px;
+    font-size:15px;
+    cursor:pointer;
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .chip:hover{border-color:#3a4552;color:var(--text);}
+  .chip.active{
+    border-color:var(--teal);
+    color:var(--teal);
+    background:var(--teal-dim);
+  }
+  .chip small{display:block;font-family:'Manrope';font-weight:400;font-size:11px;color:var(--muted);text-transform:none;letter-spacing:0;margin-top:2px;}
+
+  /* dpi slider */
+  input[type=range]{
+    -webkit-appearance:none;
+    width:100%;
+    height:6px;
+    border-radius:4px;
+    background:linear-gradient(90deg,var(--teal) 0%, var(--blaze) 100%);
+    outline:none;
+    margin-top:6px;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:20px;height:20px;
+    border-radius:50%;
+    background:var(--text);
+    border:3px solid var(--void);
+    box-shadow:0 0 0 2px var(--teal);
+    cursor:pointer;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px;height:20px;border-radius:50%;
+    background:var(--text);border:3px solid var(--void);
+    box-shadow:0 0 0 2px var(--teal);cursor:pointer;
+  }
+  .dpi-readout{
+    margin-top:10px;
+    font-size:26px;
+    font-weight:700;
+    color:var(--text);
+  }
+  .dpi-readout span{color:var(--blaze);}
+  .dpi-scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px;font-family:'Manrope';}
+
+  /* style cards */
+  .style-cards{display:flex;flex-direction:column;gap:10px;}
+  .style-card{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    padding:14px 16px;
+    border:1px solid var(--line);
+    background:var(--panel-raised);
+    border-radius:10px;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .style-card:hover{border-color:#3a4552;}
+  .style-card.active{border-color:var(--blaze);background:var(--blaze-dim);}
+  .style-card .icon{
+    width:36px;height:36px;flex:none;
+    border-radius:8px;
+    background:var(--void);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;
+  }
+  .style-card h3{margin:0 0 3px;font-size:16px;font-weight:600;letter-spacing:0.4px;}
+  .style-card p{margin:0;font-size:13px;color:var(--muted);line-height:1.4;font-family:'Manrope';}
+
+  /* ---------- OUTPUT ---------- */
+  .output-panel{
+    position:sticky;
+    top:20px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 20px 24px;
+  }
+  .output-panel h2{
+    margin:0 0 4px;
+    font-size:16px;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+    font-weight:600;
+  }
+  .output-sub{color:var(--muted);font-size:13px;margin:0 0 18px;}
+
+  .gauges{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-bottom:18px;
+  }
+  .gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .gauge{
+    width:76px;height:76px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    background:conic-gradient(var(--teal) 0deg, var(--line) 0deg);
+    transition:background 0.4s ease;
+  }
+  .gauge::before{
+    content:'';
+    position:absolute;
+    width:58px;height:58px;
+    border-radius:50%;
+    background:var(--panel);
+  }
+  .gauge .num{
+    position:relative;
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:19px;
+    color:var(--text);
+  }
+  .gauge-label{
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    color:var(--muted);
+    text-align:center;
+    font-family:'Rajdhani',sans-serif;
+    font-weight:600;
+  }
+
+  .summary-line{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    padding:8px 0;
+    border-bottom:1px solid var(--line);
+    color:var(--muted);
+    gap:10px;
+  }
+  .summary-line span.val{color:var(--text);font-weight:600;text-align:right;}
+  .summary-line:last-of-type{border-bottom:none;}
+
+  #copyBtn{
+    width:100%;
+    margin-top:18px;
+    padding:13px;
+    border-radius:10px;
+    border:none;
+    background:var(--blaze);
+    color:#0a0a0a;
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:filter .15s, transform .1s;
+  }
+  #copyBtn:hover{filter:brightness(1.08);}
+  #copyBtn:active{transform:scale(0.98);}
+  #copyBtn.copied{background:var(--teal);}
+
+  .disclaimer{
+    margin-top:14px;
+    font-size:11.5px;
+    color:var(--muted);
+    line-height:1.5;
+  }
+
+  :focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+</style>
+<style id="comparador-css">
+.comparator-section{max-width:1100px;margin:32px auto;padding:24px;border-radius:22px;background:rgba(20,20,24,.88);border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 35px rgba(0,0,0,.25)}
+.comparator-title{font-size:26px;font-weight:900;margin:0 0 6px}.comparator-sub{opacity:.72;margin:0 0 18px}.budget-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.budget-row label{font-weight:800}.budget-row select{min-width:230px;padding:11px 14px;border-radius:12px;border:1px solid #444;background:#111;color:#fff;font-size:15px}.compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:20px}.phone-card{padding:17px;border-radius:17px;background:#15151a;border:1px solid rgba(255,255,255,.08)}.phone-card h3{margin:0 0 5px;font-size:18px}.phone-price{font-weight:900;font-size:19px;margin:8px 0}.phone-meta{font-size:13px;opacity:.7;line-height:1.45}.buy-phone{display:inline-block;margin-top:12px;padding:9px 13px;border-radius:10px;background:#ffd400;color:#111;text-decoration:none;font-weight:900}.compare-empty{opacity:.7;padding:18px 0}.compare-note{font-size:12px;opacity:.55;margin-top:15px}
+@media(max-width:600px){.comparator-section{margin:22px 12px;padding:18px}.comparator-title{font-size:22px}.budget-row select{width:100%}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 200 220" aria-hidden="true">
+      <defs>
+        <linearGradient id="bGrad" x1="0" y1="0" x2="0.3" y2="1">
+          <stop offset="0%" stop-color="#ffe9a8"/>
+          <stop offset="45%" stop-color="#eba838"/>
+          <stop offset="100%" stop-color="#b56c1a"/>
+        </linearGradient>
+        <clipPath id="bClip">
+          <path fill-rule="evenodd" d="M40,20 L132,20 L155,45 L155,72 L128,95 L155,100 L162,132 L162,160 L138,182 L40,182 Z
+                                        M80,38 L118,38 L134,54 L134,68 L108,80 L80,80 Z
+                                        M80,112 L128,112 L146,130 L146,155 L118,168 L80,168 Z"/>
+        </clipPath>
+      </defs>
+      <ellipse cx="102" cy="196" rx="58" ry="8" fill="#000" opacity="0.35"/>
+      <path fill-rule="evenodd" d="M40,20 L132,20 L155,45 L155,72 L128,95 L155,100 L162,132 L162,160 L138,182 L40,182 Z
+                                    M80,38 L118,38 L134,54 L134,68 L108,80 L80,80 Z
+                                    M80,112 L128,112 L146,130 L146,155 L118,168 L80,168 Z"
+            fill="url(#bGrad)" stroke="#5a3a12" stroke-width="3" stroke-linejoin="round"/>
+      <g clip-path="url(#bClip)">
+        <path d="M20,10 L90,10 L40,120 L-30,120 Z" fill="#fff" opacity="0.35"/>
+      </g>
+    </svg>
+    <span class="brand-word">Booyah<span>Config</span></span>
+  </div>
+</header>
+
+
+<section class="intro">
+  <p class="intro-eyebrow">Configurador de sensibilidad</p>
+  <h1>Tu sensibilidad de Free Fire, ajustada a tu dispositivo, tu agarre y tu forma de jugar.</h1>
+</section>
+
+<nav class="tabs">
+  <button class="tab-btn active" id="tabSens" type="button">Sensibilidad</button>
+  <button class="tab-btn" id="tabCombos" type="button">Combos de habilidades</button>
+</nav>
+
+
+<section class="vip-section" aria-label="Opciones VIP">
+  <div class="vip-card">
+    <span class="vip-badge">VIP BOOYAHCONFIG</span>
+    <h2>Desbloqueá el beneficio VIP</h2>
+    <p>Con una donación superior a <strong>ARS $1.000</strong>, recibís un curso gratuito y personalizado para optimizar tu celular al máximo para Free Fire.</p>
+    <div class="vip-options">
+      <div class="vip-option"><strong>Optimización personalizada</strong><span>Revisión de ajustes del dispositivo y recomendaciones adaptadas a tu celular.</span></div>
+      <div class="vip-option"><strong>Configuración para Free Fire</strong><span>Consejos sobre sensibilidad, DPI, gráficos y rendimiento según tu equipo.</span></div>
+      <div class="vip-option"><strong>Guía paso a paso</strong><span>Un mini curso pensado para que entiendas qué cambiar y por qué, en vez de tocar botones al azar.</span></div>
+    </div>
+    <div class="vip-cta"><strong>¿Cómo se activa?</strong> Hacé una donación superior a ARS $1.000 y conservá el comprobante. La activación del curso se realiza manualmente para verificar la donación.</div>
+  </div>
+</section>
+
+<main class="grid" id="sensSection">
+  <section class="config-panel">
+
+    <div class="field-group">
+      <h2><span class="step-mark">01</span> Tu dispositivo</h2>
+      <div class="device-search-wrap">
+        <label for="deviceSearch">Buscar dispositivo</label>
+        <div class="device-search-box">
+          <span class="search-icon">⌕</span>
+          <input id="deviceSearch" type="search" placeholder="Ej: Galaxy A55, iPhone 15, Redmi Note 13..." autocomplete="off">
+        </div>
+        <div id="deviceSearchResults" class="device-search-results"></div>
+      </div>
+      <div class="select-row">
+        <div class="select-wrap">
+          <label for="brandSelect">Marca</label>
+          <select id="brandSelect"></select>
+        </div>
+        <div class="select-wrap">
+          <label for="modelSelect">Modelo</label>
+          <select id="modelSelect"></select>
+        </div>
+      </div>
+      <p class="brand-note" id="brandNote"></p>
+
+      <div class="device-card">
+        <svg class="phone-icon" id="phoneIcon" viewBox="0 0 52 96">
+          <rect x="1" y="1" width="50" height="94" rx="10" fill="#0a0e13" stroke="#232c37" stroke-width="2"/>
+          <rect x="6" y="9" width="40" height="72" rx="3" fill="var(--panel)" id="phoneScreen"/>
+          <circle cx="26" cy="88" r="2.4" fill="#3a4552"/>
+          <rect x="18" y="4" width="16" height="2.4" rx="1.2" fill="#3a4552"/>
+        </svg>
+        <div class="info">
+          <span class="device-tier-label" id="tierLabel">Gama media</span>
+          <p class="device-model-name" id="modelName">Galaxy A55 5G</p>
+          <p class="device-spec-line">RAM estimada: <b id="ramEstimate">6–8 GB</b></p>
+          <div class="fps-row">
+            <div class="fps-item min"><div class="fps-val" id="fpsMin">–</div><div class="fps-tag">Mín. gráficos</div></div>
+            <div class="fps-item std"><div class="fps-val" id="fpsStd">–</div><div class="fps-tag">Estándar</div></div>
+            <div class="fps-item max"><div class="fps-val" id="fpsMax">–</div><div class="fps-tag">Máx. gráficos</div></div>
+          </div>
+          <p class="fps-disclaimer">FPS estimados en Free Fire por gama del modelo, no son mediciones de laboratorio por unidad.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <h2><span class="step-mark">02</span> DPI a gusto</h2>
+      <input type="range" id="dpiSlider" min="100" max="1200" step="10" value="400">
+      <div class="dpi-readout"><span id="dpiValue">400</span> DPI</div>
+      <div class="dpi-scale"><span>100 (más swipe)</span><span>1200 (más fino)</span></div>
+    </div>
+
+    <div class="field-group">
+      <h2><span class="step-mark">03</span> Dedos con los que jugás</h2>
+      <div class="chip-row" id="fingerOptions">
+        <div class="chip" data-value="2">2 dedos</div>
+        <div class="chip active" data-value="3">3 dedos</div>
+        <div class="chip" data-value="4">4 dedos</div>
+        <div class="chip" data-value="garra">Garra (5+)</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <h2><span class="step-mark">04</span> Tu estilo de juego</h2>
+      <div class="style-cards" id="styleOptions">
+        <div class="style-card active" data-value="rusher">
+          <div class="icon">🔥</div>
+          <div><h3>Rusher</h3><p>Peleas cerca, flicks rápidos, siempre encima del enemigo.</p></div>
+        </div>
+        <div class="style-card" data-value="soporte">
+          <div class="icon">🛡️</div>
+          <div><h3>Soporte</h3><p>Cubrís al equipo, peleas a media distancia, revives y rota.</p></div>
+        </div>
+        <div class="style-card" data-value="francotirador">
+          <div class="icon">🎯</div>
+          <div><h3>Francotirador</h3><p>Distancia larga, un solo tiro certero, precisión sobre velocidad.</p></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <aside class="output-panel">
+    <h2>Tu configuración</h2>
+    <p class="output-sub">Se actualiza en vivo según tus elecciones.</p>
+
+    <div class="gauges" id="gauges">
+      <div class="gauge-wrap"><div class="gauge" id="g-general"><span class="num">0</span></div><div class="gauge-label">General</div></div>
+      <div class="gauge-wrap"><div class="gauge" id="g-reddot"><span class="num">0</span></div><div class="gauge-label">Red Dot</div></div>
+      <div class="gauge-wrap"><div class="gauge" id="g-2x"><span class="num">0</span></div><div class="gauge-label">Mira 2x</div></div>
+      <div class="gauge-wrap"><div class="gauge" id="g-4x"><span class="num">0</span></div><div class="gauge-label">Mira 4x</div></div>
+      <div class="gauge-wrap"><div class="gauge" id="g-awm"><span class="num">0</span></div><div class="gauge-label">AWM</div></div>
+      <div class="gauge-wrap"><div class="gauge" id="g-freelook"><span class="num">0</span></div><div class="gauge-label">Free Look</div></div>
+    </div>
+
+    <div class="summary-line"><span>Dispositivo</span><span class="val" id="sumDevice">—</span></div>
+    <div class="summary-line"><span>DPI</span><span class="val" id="sumDpi">400</span></div>
+    <div class="summary-line"><span>Dedos</span><span class="val" id="sumFingers">3 dedos</span></div>
+    <div class="summary-line"><span>Estilo</span><span class="val" id="sumStyle">Rusher</span></div>
+
+    <button id="copyBtn">Copiar configuración</button>
+    <p class="disclaimer">Son valores de partida calculados a tu medida, no una sensibilidad "pro" oficial. Afinalos ±5-10 en el juego hasta que se sientan naturales.</p>
+  </aside>
+</main>
+
+<main class="grid combos-grid is-hidden" id="combosSection">
+  <section class="config-panel">
+    <div class="field-group">
+      <div class="combo-hero"><div><strong>Combos de habilidad</strong><span>Combo predeterminado de BooyahConfig.</span></div><div class="combo-badge">FREE FIRE</div></div>
+      <h2><span class="step-mark">★</span> Johaanzu</h2>
+      <p class="brand-note" style="margin-top:-4px;">Función: <strong>Johaanzu</strong></p>
+    </div>
+
+    <div class="field-group">
+      <h2><span class="step-mark">◆</span> Habilidades</h2>
+      <div class="combo-builder" id="comboSlots"></div>
+    </div>
+  </section>
+
+  <aside class="output-panel">
+    <h2>Información del combo</h2>
+    <div class="saved-combo" style="border-bottom:none;">
+      <div class="saved-combo-picks"><b>Función:</b> Johaanzu<br><b>Aditamento:</b> Soporte de equipo<br><b>Habilidades:</b> Andrew · Olivia · Xayne · Antonio</div>
+    </div>
+    <p class="disclaimer">Este combo es predeterminado y no se puede editar desde la página.</p>
+  </aside>
+</main>
+
+<script>
+  /* =========================================================
+     BASE DE MODELOS — SAMSUNG
+     (otras marcas se van a ir sumando)
+  ========================================================= */
+  const SAMSUNG = {
+    "Galaxy S": ["Galaxy S26 Ultra","Galaxy S26+","Galaxy S26","Galaxy S25 Ultra","Galaxy S25+","Galaxy S25","Galaxy S25 Edge","Galaxy S25 FE","Galaxy S24 Ultra","Galaxy S24+","Galaxy S24","Galaxy S24 FE","Galaxy S23 Ultra","Galaxy S23+","Galaxy S23","Galaxy S23 FE","Galaxy S22 Ultra","Galaxy S22+","Galaxy S22","Galaxy S21 Ultra","Galaxy S21+","Galaxy S21","Galaxy S21 FE","Galaxy S20 Ultra","Galaxy S20+","Galaxy S20","Galaxy S20 FE","Galaxy S10+","Galaxy S10","Galaxy S10e","Galaxy S10 5G","Galaxy S9+","Galaxy S9","Galaxy S8+","Galaxy S8","Galaxy S7 edge","Galaxy S7","Galaxy S6 edge+","Galaxy S6 edge","Galaxy S6","Galaxy S5","Galaxy S5 Mini","Galaxy S4","Galaxy S4 Mini","Galaxy S3","Galaxy S3 Mini","Galaxy S2","Galaxy S"],
+    "Galaxy Z": ["Galaxy Z Fold8","Galaxy Z Fold8 Ultra","Galaxy Z Flip8","Galaxy Z Fold7","Galaxy Z Flip7","Galaxy Z Flip7 FE","Galaxy Z Fold6","Galaxy Z Flip6","Galaxy Z Fold5","Galaxy Z Flip5","Galaxy Z Fold4","Galaxy Z Flip4","Galaxy Z Fold3","Galaxy Z Flip3","Galaxy Z Fold2","Galaxy Z Flip","Galaxy Fold"],
+    "Galaxy A": ["Galaxy A57 5G","Galaxy A37 5G","Galaxy A36 5G","Galaxy A26 5G","Galaxy A25 5G","Galaxy A16 5G","Galaxy A16","Galaxy A15 5G","Galaxy A15","Galaxy A14 5G","Galaxy A14","Galaxy A13 5G","Galaxy A13","Galaxy A12","Galaxy A11","Galaxy A10","Galaxy A10s","Galaxy A9","Galaxy A9 (2018)","Galaxy A8","Galaxy A8+","Galaxy A8 (2018)","Galaxy A7","Galaxy A7 (2018)","Galaxy A6","Galaxy A6+","Galaxy A5","Galaxy A5 (2017)","Galaxy A3","Galaxy A3 (2017)","Galaxy A2 Core","Galaxy A01","Galaxy A01 Core","Galaxy A02","Galaxy A02s","Galaxy A03","Galaxy A03s","Galaxy A04","Galaxy A04e","Galaxy A04s","Galaxy A05","Galaxy A05s","Galaxy A06","Galaxy A06 5G","Galaxy A07","Galaxy A07 5G","Galaxy A20","Galaxy A20s","Galaxy A21","Galaxy A21s","Galaxy A22","Galaxy A22 5G","Galaxy A23","Galaxy A23 5G","Galaxy A24","Galaxy A30","Galaxy A30s","Galaxy A31","Galaxy A32","Galaxy A32 5G","Galaxy A33 5G","Galaxy A34 5G","Galaxy A35 5G","Galaxy A40","Galaxy A41","Galaxy A42 5G","Galaxy A50","Galaxy A50s","Galaxy A51","Galaxy A51 5G","Galaxy A52","Galaxy A52 5G","Galaxy A52s 5G","Galaxy A53 5G","Galaxy A54 5G","Galaxy A55 5G","Galaxy A56 5G","Galaxy A70","Galaxy A70s","Galaxy A71","Galaxy A71 5G","Galaxy A72","Galaxy A73 5G","Galaxy A80","Galaxy A90 5G"],
+    "Galaxy M": ["Galaxy M07","Galaxy M06","Galaxy M05","Galaxy M04","Galaxy M03","Galaxy M02","Galaxy M02s","Galaxy M01","Galaxy M01 Core","Galaxy M10","Galaxy M11","Galaxy M12","Galaxy M13","Galaxy M14 5G","Galaxy M15 5G","Galaxy M16 5G","Galaxy M20","Galaxy M21","Galaxy M21s","Galaxy M22","Galaxy M23 5G","Galaxy M30","Galaxy M30s","Galaxy M31","Galaxy M31s","Galaxy M32","Galaxy M33 5G","Galaxy M34 5G","Galaxy M35 5G","Galaxy M40","Galaxy M41","Galaxy M42 5G","Galaxy M51","Galaxy M52 5G","Galaxy M53 5G","Galaxy M54 5G","Galaxy M55 5G","Galaxy M55s 5G","Galaxy M62"],
+    "Galaxy Note": ["Galaxy Note20 Ultra","Galaxy Note20","Galaxy Note10+","Galaxy Note10","Galaxy Note10 Lite","Galaxy Note9","Galaxy Note8","Galaxy Note7","Galaxy Note5","Galaxy Note4","Galaxy Note3","Galaxy Note2","Galaxy Note"],
+    "Galaxy J": ["Galaxy J8","Galaxy J7","Galaxy J7 Pro","Galaxy J7 Prime","Galaxy J7 Duo","Galaxy J6","Galaxy J6+","Galaxy J5","Galaxy J5 Prime","Galaxy J4","Galaxy J4+","Galaxy J3","Galaxy J3 Pro","Galaxy J2","Galaxy J2 Prime","Galaxy J2 Pro","Galaxy J1","Galaxy J1 Mini","Galaxy J1 Ace"],
+    "Galaxy F": ["Galaxy F06","Galaxy F05","Galaxy F04","Galaxy F03","Galaxy F02","Galaxy F01","Galaxy F13","Galaxy F14 5G","Galaxy F15 5G","Galaxy F16 5G","Galaxy F22","Galaxy F23 5G","Galaxy F34 5G","Galaxy F42 5G","Galaxy F52 5G","Galaxy F54 5G","Galaxy F62"],
+    "Galaxy Tab S": ["Galaxy Tab S11 Ultra","Galaxy Tab S11","Galaxy Tab S10 Ultra","Galaxy Tab S10+","Galaxy Tab S10","Galaxy Tab S10 FE+","Galaxy Tab S10 FE","Galaxy Tab S10 Lite","Galaxy Tab S9 Ultra","Galaxy Tab S9+","Galaxy Tab S9","Galaxy Tab S9 FE+","Galaxy Tab S9 FE","Galaxy Tab S8 Ultra","Galaxy Tab S8+","Galaxy Tab S8","Galaxy Tab S8 FE","Galaxy Tab S7+","Galaxy Tab S7","Galaxy Tab S7 FE","Galaxy Tab S6","Galaxy Tab S6 Lite","Galaxy Tab S5e","Galaxy Tab S4","Galaxy Tab S3","Galaxy Tab S2 9.7","Galaxy Tab S2 8.0","Galaxy Tab S","Galaxy Tab S 8.4","Galaxy Tab S 10.5"],
+    "Galaxy Tab A": ["Galaxy Tab A11+","Galaxy Tab A11","Galaxy Tab A9+","Galaxy Tab A9","Galaxy Tab A8","Galaxy Tab A7","Galaxy Tab A7 Lite","Galaxy Tab A 10.5","Galaxy Tab A 10.1","Galaxy Tab A 10.1 (2019)","Galaxy Tab A 8.0","Galaxy Tab A 8.0 (2019)","Galaxy Tab A 8.0 (2017)","Galaxy Tab A 7.0","Galaxy Tab A 9.7"],
+    "Galaxy Tab Active": ["Galaxy Tab Active5 Pro","Galaxy Tab Active5","Galaxy Tab Active4 Pro","Galaxy Tab Active3","Galaxy Tab Active Pro","Galaxy Tab Active2","Galaxy Tab Active"],
+    "Galaxy Tab": ["Galaxy Tab A Kids Edition","Galaxy Tab 4 10.1","Galaxy Tab 4 8.0","Galaxy Tab 4 7.0","Galaxy Tab 3 10.1","Galaxy Tab 3 8.0","Galaxy Tab 3 7.0","Galaxy Tab 2 10.1","Galaxy Tab 2 7.0","Galaxy Tab 10.1","Galaxy Tab 8.9","Galaxy Tab 7.7","Galaxy Tab 7.0"]
+  };
+
+  const XIAOMI = {
+    "Xiaomi": ["Xiaomi 17 Ultra","Xiaomi 17T Pro","Xiaomi 17T","Xiaomi 17","Xiaomi 15 Ultra","Xiaomi 15","Xiaomi 15T Pro","Xiaomi 15T","Xiaomi 14 Ultra","Xiaomi 14","Xiaomi 14T Pro","Xiaomi 14T","Xiaomi 13 Ultra","Xiaomi 13 Pro","Xiaomi 13","Xiaomi 13T Pro","Xiaomi 13T","Xiaomi 13 Lite","Xiaomi 12 Pro","Xiaomi 12","Xiaomi 12T Pro","Xiaomi 12T","Xiaomi 11T Pro","Xiaomi 11T","Xiaomi 11 Ultra","Xiaomi 11 Pro","Xiaomi 11","Xiaomi 11 Lite 5G NE","Xiaomi 11 Lite 5G","Xiaomi 10T Pro","Xiaomi 10T","Xiaomi 10 Pro","Xiaomi 10","Xiaomi 9T Pro","Xiaomi 9T","Xiaomi 9","Xiaomi 9 SE","Xiaomi 8","Xiaomi 8 Pro","Xiaomi 8 SE","Xiaomi MIX Fold","Xiaomi MIX Fold 2","Xiaomi MIX Fold 3","Xiaomi MIX Fold 4","Xiaomi MIX Flip","Xiaomi MIX Flip 2"],
+    "Redmi": ["Redmi 17","Redmi 17 5G","Redmi 15","Redmi 15 5G","Redmi 15C","Redmi 15C 5G","Redmi 14C","Redmi 13","Redmi 13C","Redmi 13C 5G","Redmi 12","Redmi 12 5G","Redmi 10","Redmi 10 5G","Redmi 10C","Redmi 9","Redmi 9A","Redmi 9C","Redmi 9T","Redmi 8","Redmi 8A","Redmi 7","Redmi 7A","Redmi 6","Redmi 6A","Redmi 5","Redmi 5A","Redmi 4","Redmi 4X","Redmi 3","Redmi 3S","Redmi 2","Redmi 2A","Redmi A7","Redmi A7 Pro","Redmi A5","Redmi A3","Redmi A3x","Redmi A2","Redmi A2+","Redmi A1","Redmi A1+"],
+    "Redmi Note": ["Redmi Note 15 Pro+ 5G","Redmi Note 15 Pro 5G","Redmi Note 15 Pro","Redmi Note 15","Redmi Note 14 Pro+ 5G","Redmi Note 14 Pro 5G","Redmi Note 14 Pro","Redmi Note 14","Redmi Note 13 Pro+ 5G","Redmi Note 13 Pro 5G","Redmi Note 13 Pro","Redmi Note 13 5G","Redmi Note 13","Redmi Note 12 Pro+ 5G","Redmi Note 12 Pro 5G","Redmi Note 12 Pro","Redmi Note 12 5G","Redmi Note 12","Redmi Note 11 Pro+ 5G","Redmi Note 11 Pro 5G","Redmi Note 11 Pro","Redmi Note 11 5G","Redmi Note 11","Redmi Note 10 Pro","Redmi Note 10 5G","Redmi Note 10","Redmi Note 9 Pro","Redmi Note 9S","Redmi Note 9","Redmi Note 8 Pro","Redmi Note 8","Redmi Note 7 Pro","Redmi Note 7","Redmi Note 6 Pro","Redmi Note 5 Pro","Redmi Note 5","Redmi Note 4","Redmi Note 3","Redmi Note 2","Redmi Note"],
+    "POCO": ["POCO F8 Ultra","POCO F8 Pro","POCO F7 Ultra","POCO F7 Pro","POCO F7","POCO F6 Pro","POCO F6","POCO F5 Pro","POCO F5","POCO F4 GT","POCO F4","POCO F3","POCO F2 Pro","POCO X8 Pro","POCO X8 Pro Max","POCO X7 Pro","POCO X7","POCO X6 Pro","POCO X6","POCO X5 Pro 5G","POCO X5 5G","POCO X4 Pro 5G","POCO X4 GT","POCO X3 Pro","POCO X3 NFC","POCO X3","POCO X2","POCO M8 Pro 5G","POCO M8 5G","POCO M8s 5G","POCO M7 Pro 5G","POCO M7","POCO M6 Pro","POCO M6","POCO M5s","POCO M5","POCO M4 5G","POCO M4 Pro","POCO M3 Pro 5G","POCO M3","POCO M2 Pro","POCO M2","POCO C85","POCO C81 Pro","POCO C75","POCO C65","POCO C55","POCO C40","POCO C31","POCO C3"],
+    "Xiaomi Pad": ["Xiaomi Pad 8","Xiaomi Pad 8 Pro","Xiaomi Pad Mini","Xiaomi Pad 7","Xiaomi Pad 7 Pro","Xiaomi Pad 7 Ultra","Xiaomi Pad 6S Pro 12.4","Xiaomi Pad 6","Xiaomi Pad 6 Pro","Xiaomi Pad 5 Pro","Xiaomi Pad 5","Xiaomi Pad 4","Xiaomi Pad 4 Plus","Xiaomi Pad 3","Xiaomi Pad 2","Xiaomi Mi Pad 4","Xiaomi Mi Pad 3","Xiaomi Mi Pad 2","Xiaomi Mi Pad"],
+    "Redmi Pad": ["Redmi Pad 2","Redmi Pad 2 4G","Redmi Pad 2 9.7","Redmi Pad 2 9.7 4G","Redmi Pad 2 Pro","Redmi Pad 2 Pro 5G","Redmi Pad Pro","Redmi Pad Pro 5G","Redmi Pad SE","Redmi Pad SE 8.7","Redmi Pad SE 8.7 4G","Redmi Pad"],
+    "POCO Pad": ["POCO Pad C1","POCO Pad M1","POCO Pad X1","POCO Pad"]
+  };
+
+  const APPLE = {
+    "iPhone": ["iPhone 17 Pro Max","iPhone 17 Pro","iPhone Air","iPhone 17","iPhone 17e","iPhone 16 Pro Max","iPhone 16 Pro","iPhone 16 Plus","iPhone 16","iPhone 16e","iPhone 15 Pro Max","iPhone 15 Pro","iPhone 15 Plus","iPhone 15","iPhone 14 Pro Max","iPhone 14 Pro","iPhone 14 Plus","iPhone 14","iPhone 13 Pro Max","iPhone 13 Pro","iPhone 13","iPhone 13 mini","iPhone SE (3.ª generación)","iPhone 12 Pro Max","iPhone 12 Pro","iPhone 12","iPhone 12 mini","iPhone 11 Pro Max","iPhone 11 Pro","iPhone 11","iPhone SE (2.ª generación)","iPhone XS Max","iPhone XS","iPhone XR","iPhone X","iPhone 8 Plus","iPhone 8","iPhone 7 Plus","iPhone 7","iPhone SE (1.ª generación)","iPhone 6s Plus","iPhone 6s","iPhone 6 Plus","iPhone 6","iPhone 5s","iPhone 5c","iPhone 5","iPhone 4S","iPhone 4","iPhone 3GS","iPhone 3G"],
+    "iPad": ["iPad (1.ª generación)","iPad 2","iPad (3.ª generación)","iPad (4.ª generación)","iPad (5.ª generación)","iPad (6.ª generación)","iPad (7.ª generación)","iPad (8.ª generación)","iPad (9.ª generación)","iPad (10.ª generación)","iPad (A16)","iPad mini","iPad mini 2","iPad mini 3","iPad mini 4","iPad mini (5.ª generación)","iPad mini (6.ª generación)","iPad mini (A17 Pro)","iPad Air","iPad Air 2","iPad Air (3.ª generación)","iPad Air (4.ª generación)","iPad Air (5.ª generación)","iPad Air 11\" (M2)","iPad Air 13\" (M2)","iPad Air 11\" (M3)","iPad Air 13\" (M3)","iPad Air 11\" (M4)","iPad Air 13\" (M4)","iPad Pro 9.7\"","iPad Pro 10.5\"","iPad Pro 11\" (1.ª generación)","iPad Pro 11\" (2.ª generación)","iPad Pro 11\" (3.ª generación)","iPad Pro 11\" (4.ª generación)","iPad Pro 11\" (M4)","iPad Pro 11\" (M5)","iPad Pro 12.9\" (1.ª generación)","iPad Pro 12.9\" (2.ª generación)","iPad Pro 12.9\" (3.ª generación)","iPad Pro 12.9\" (4.ª generación)","iPad Pro 12.9\" (5.ª generación)","iPad Pro 12.9\" (6.ª generación)","iPad Pro 13\" (M4)","iPad Pro 13\" (M5)"]
+  };
+
+  const ZTE = {
+    "ZTE Blade": ["Blade A3","Blade A5","Blade A5 2019","Blade A7","Blade A31","Blade A34","Blade A35","Blade A35e","Blade A35 Lite","Blade A36","Blade A51","Blade A52","Blade A53","Blade A54","Blade A55","Blade A56","Blade A70","Blade A71","Blade A72","Blade A73","Blade A75 4G","Blade A76 4G","Blade A76 5G","Blade V30","Blade V30 Vita","Blade V40","Blade V40 Pro","Blade V40 Vita","Blade V40 Smart","Blade V41 Smart","Blade V50 Design","Blade V50 Vita","Blade V60","Blade V60 Design","Blade V60 Vita","Blade V60 Smart","Blade V70","Blade V70 Design","Blade V70 Max","Blade V70 Vita"],
+    "ZTE Axon": ["Axon 7","Axon 7 mini","Axon 10 Pro","Axon 10s Pro","Axon 11","Axon 11 SE","Axon 20","Axon 20 4G","Axon 30","Axon 30 Pro","Axon 30 Ultra","Axon 40","Axon 40 Lite","Axon 40 SE","Axon 40 Pro","Axon 40 Ultra","Axon 50","Axon 50 Lite","Axon 60","Axon 60 Lite","Axon 60 Ultra","Axon M"],
+    "Nubia": ["nubia Z5","nubia Z5 mini","nubia Z7","nubia Z7 mini","nubia Z7 Max","nubia Z9","nubia Z9 mini","nubia Z9 Max","nubia Z11","nubia Z11 mini","nubia Z11 miniS","nubia Z11 Max","nubia Z17","nubia Z17 mini","nubia Z17S","nubia Z18","nubia Z18 mini","nubia Z18 Max","nubia Z20","nubia Z30 Pro","nubia Z40 Pro","nubia Z40S Pro","nubia Z50","nubia Z50S Pro","nubia Z50 Ultra","nubia Z60 Ultra","nubia Z60 Ultra Leading Version","nubia Z60S Pro","nubia Z70 Ultra","nubia Z70S Ultra","nubia Z80 Ultra","nubia Neo 5G","nubia Neo 2 5G","nubia Neo 3 5G","nubia Neo 3 GT 5G","nubia Neo 5 5G","nubia Neo 5 Pro","nubia Neo 5 GT","nubia Neo 5 GT Special Edition","nubia Neo 5 Max","nubia Focus 5G","nubia Focus Pro 5G","nubia Focus 2 5G","nubia Focus 2 Ultra 5G","nubia Flip 5G","nubia Flip 2 5G","nubia Music","nubia Music 2","nubia Air","nubia Air Pro","nubia V60 Design","nubia V70 Design","nubia V80 Max"],
+    "Tablets": ["ZTE Blade X1001","ZTE Pad (5G X1102N)","nubia Pad Pro"]
+  };
+
+  const HONOR = {
+    "Magic": ["HONOR Magic V6","HONOR Magic V5","HONOR Magic V3","HONOR Magic V2","HONOR Magic V2 RSR Porsche Design","HONOR Magic Vs","HONOR Magic Vs2","HONOR Magic Vs3","HONOR Magic V","HONOR Magic V6 RSR","HONOR Magic8 Pro","HONOR Magic8 Lite","HONOR Magic7 Pro","HONOR Magic7 Lite","HONOR Magic7 RSR Porsche Design","HONOR Magic6 Pro","HONOR Magic6 Lite","HONOR Magic6 RSR Porsche Design","HONOR Magic5 Pro","HONOR Magic5 Lite","HONOR Magic4 Pro","HONOR Magic4 Lite","HONOR Magic3 Pro+","HONOR Magic3 Pro","HONOR Magic3","HONOR Magic2","HONOR Magic 4 Pro 5G"],
+    "N Series": ["HONOR 600 Pro","HONOR 600","HONOR 600e","HONOR 600 Lite","HONOR 600 Smart 5G","HONOR 400 Pro","HONOR 400","HONOR 400 Smart","HONOR 400 Smart 5G","HONOR 400 Lite","HONOR 300 Ultra","HONOR 300 Pro","HONOR 300","HONOR 300 Lite","HONOR 200 Pro","HONOR 200","HONOR 200 Lite","HONOR 200 Smart","HONOR 100 Pro","HONOR 100","HONOR 90","HONOR 90 Pro","HONOR 90 Lite","HONOR 90 Smart","HONOR 80 Pro","HONOR 80","HONOR 80 GT","HONOR 80 SE","HONOR 70 Pro+","HONOR 70 Pro","HONOR 70","HONOR 70 Lite","HONOR 60 Pro","HONOR 60","HONOR 50 Pro","HONOR 50","HONOR 50 Lite","HONOR 30 Pro+","HONOR 30 Pro","HONOR 30","HONOR 30 Lite","HONOR 20 Pro","HONOR 20","HONOR 20S","HONOR 20 Lite","HONOR 10","HONOR 10 Lite","HONOR 9","HONOR 9 Lite","HONOR 8","HONOR 8 Pro","HONOR 8 Lite","HONOR 7","HONOR 7i","HONOR 6","HONOR 6 Plus","HONOR 5X","HONOR 4X","HONOR 3X","HONOR 3C"],
+    "X Series": ["HONOR X9d","HONOR X9d Smart","HONOR X9b","HONOR X9a","HONOR X9","HONOR X8d","HONOR X8c","HONOR X8b","HONOR X8a","HONOR X8","HONOR X7e Plus","HONOR X7e","HONOR X7d 5G","HONOR X7d","HONOR X7b","HONOR X7a","HONOR X7","HONOR X6d 5G","HONOR X6e","HONOR X6b","HONOR X6a","HONOR X6","HONOR X5c Plus","HONOR X5c","HONOR X5d Plus","HONOR X5d","HONOR X5 Plus","HONOR X5b Plus","HONOR X5b","HONOR X5a","HONOR X5","HONOR X4","HONOR X3","HONOR X2","HONOR X10 Max","HONOR X10","HONOR X10 Lite","HONOR X20","HONOR X20 SE","HONOR X20 5G","HONOR X30","HONOR X30i","HONOR X30 Max","HONOR X40","HONOR X40i","HONOR X40 GT","HONOR X50","HONOR X50i","HONOR X50i+","HONOR X50 GT","HONOR X50 Pro","HONOR X60","HONOR X60i","HONOR X60 Pro","HONOR X60 GT","HONOR X70","HONOR X70i"],
+    "Play": ["HONOR Play10","HONOR Play9A","HONOR Play8T","HONOR Play8","HONOR Play7T","HONOR Play7T Pro","HONOR Play6T","HONOR Play6T Pro","HONOR Play5T Pro","HONOR Play5","HONOR Play4 Pro","HONOR Play4T Pro","HONOR Play4T","HONOR Play4","HONOR Play3","HONOR Play2","HONOR Play","HONOR Play 40 Plus","HONOR Play 30 Plus","HONOR Play 30","HONOR Play 20","HONOR Play 20A","HONOR Play 5 Youth"],
+    "V Series": ["HONOR V40","HONOR V40 Lite","HONOR V30 Pro","HONOR V30","HONOR V20","HONOR V20 Moschino Edition","HONOR V10","HONOR V9","HONOR V8","HONOR V8 Max","HONOR View20","HONOR View30 Pro","HONOR View30","HONOR View10","HONOR View20"],
+    "Legacy": ["HONOR Holly","HONOR Holly 2 Plus","HONOR Holly 3","HONOR 4 Play","HONOR 4C","HONOR 4C Pro","HONOR 5C","HONOR 5A","HONOR 6A","HONOR 6X","HONOR 7A","HONOR 7C","HONOR 7X","HONOR 8A","HONOR 8C","HONOR 8X","HONOR 8X Max","HONOR 9A","HONOR 9C","HONOR 9X","HONOR 9X Lite","HONOR 9X Pro","HONOR 10X Lite","HONOR 20e","HONOR 20i","HONOR 30S","HONOR 30 Youth Edition","HONOR 30 Lite","HONOR 50 SE","HONOR 50 SE 5G","HONOR 60 SE","HONOR 70 SE","HONOR 80 Lite","HONOR 90 SE"],
+    "Tablets": ["HONOR MagicPad4","HONOR MagicPad3","HONOR MagicPad2","HONOR MagicPad","HONOR Pad V9","HONOR Pad V8 Pro","HONOR Pad V8","HONOR Pad 20 Pro","HONOR Pad 20","HONOR Pad 10","HONOR Pad 9","HONOR Pad 8","HONOR Pad 7","HONOR Pad 6","HONOR Pad 5","HONOR Pad X9 Max","HONOR Pad X9b Max","HONOR Pad X9a","HONOR Pad X9","HONOR Pad X8b Kids Edition","HONOR Pad X8b","HONOR Pad X8a","HONOR Pad X8","HONOR Pad X7","HONOR Pad X6","HONOR Pad X5","HONOR Pad 2","HONOR WaterPlay 8" ]
+  };
+
+  const MOTOROLA = {
+    "Motorola Razr": ["Motorola Razr Fold","Motorola Razr Fold FIFA","Motorola Razr+ (2026)","Motorola Razr (2026)","Motorola Razr+ (2025)","Motorola Razr (2025)","Motorola Razr+ (2024)","Motorola Razr (2024)","Motorola Razr+ (2023)","Motorola Razr 70 Ultra","Motorola Razr 70","Motorola Razr 60 Ultra","Motorola Razr 60","Motorola Razr 50 Ultra","Motorola Razr 50","Motorola Razr 40 Ultra","Motorola Razr 40","Motorola Razr 2022","Motorola Razr 5G","Motorola Razr 2019","Motorola Razr V3","Motorola Razr V3i","Motorola Razr V3x","Motorola Razr V3xx","Motorola Razr2 V8","Motorola Razr2 V9","Motorola Razr2 V9x"],
+    "Motorola Edge": ["Motorola Edge 70 Pro","Motorola Edge 70","Motorola Edge 70 Fusion","Motorola Edge 70 Fusion FIFA","Motorola Edge 70 Fusion with Swarovski","Motorola Edge 70 Crystals by Swarovski","Motorola Edge 60 Pro","Motorola Edge 60","Motorola Edge 60 Fusion","Motorola Edge 60 Stylus","Motorola Edge 60 Neo","Motorola Edge 50 Ultra","Motorola Edge 50 Pro","Motorola Edge 50 Fusion","Motorola Edge 50 Neo","Motorola Edge 50","Motorola Edge 40 Pro","Motorola Edge 40","Motorola Edge 40 Neo","Motorola Edge 30 Ultra","Motorola Edge 30 Pro","Motorola Edge 30 Fusion","Motorola Edge 30 Neo","Motorola Edge 30","Motorola Edge 20 Pro","Motorola Edge 20","Motorola Edge 20 Lite","Motorola Edge+ (2023)","Motorola Edge+ (2022)","Motorola Edge+ (2020)","Motorola Edge (2022)","Motorola Edge (2021)","Motorola Edge (2020)","Motorola Edge 5G UW","Motorola Edge 2023","Motorola Edge 2024"],
+    "Signature": ["Motorola Signature","Motorola Signature Crystals by Swarovski"],
+    "Moto G": ["Moto G Max","Moto G86 Power 5G","Moto G86 5G","Moto G77","Moto G67","Moto G56 5G","Moto G47","Moto G45 5G","Moto G35 5G","Moto G34 5G","Moto G85 5G","Moto G84 5G","Moto G75 5G","Moto G73 5G","Moto G72","Moto G71 5G","Moto G70","Moto G62 5G","Moto G61 5G","Moto G60","Moto G60S","Moto G54 5G","Moto G53 5G","Moto G52","Moto G51 5G","Moto G50 5G","Moto G42","Moto G41","Moto G40 Fusion","Moto G31","Moto G30","Moto G22","Moto G20","Moto G10","Moto G100","Moto G200 5G","Moto G 5G","Moto G 5G (2023)","Moto G 5G (2024)","Moto G 5G (2025)","Moto G Stylus","Moto G Stylus 5G","Moto G Stylus 5G (2022)","Moto G Stylus 5G (2023)","Moto G Stylus 5G (2024)","Moto G Stylus 5G (2025)","Moto G Power","Moto G Power (2021)","Moto G Power (2022)","Moto G Power 5G (2023)","Moto G Power 5G (2024)","Moto G Power 5G (2025)","Moto G Play","Moto G Play (2021)","Moto G Play (2023)","Moto G Play (2024)","Moto G Play (2025)","Moto G Fast","Moto G8 Plus","Moto G8 Power","Moto G8 Power Lite","Moto G8 Play","Moto G8","Moto G7 Plus","Moto G7","Moto G7 Power","Moto G7 Play","Moto G7 Optimo Maxx","Moto G6 Plus","Moto G6","Moto G6 Play","Moto G5S Plus","Moto G5S","Moto G5 Plus","Moto G5","Moto G5 Play","Moto G4 Plus","Moto G4","Moto G4 Play","Moto G3","Moto G2","Moto G","Moto G9 Plus","Moto G9 Power","Moto G9 Play","Moto G15","Moto G15 Power","Moto G17","Moto G17 Power","Moto G06","Moto G06 NFC"],
+    "Moto E": ["Moto E16","Moto E15","Moto E14","Moto E13","Moto E22","Moto E22i","Moto E32","Moto E32s","Moto E40","Moto E30","Moto E20","Moto E7 Plus","Moto E7","Moto E7 Power","Moto E6 Plus","Moto E6s","Moto E6","Moto E5 Plus","Moto E5","Moto E5 Play","Moto E5 Play Go","Moto E4 Plus","Moto E4","Moto E3 Power","Moto E2","Moto E"],
+    "Moto Z": ["Moto Z4","Moto Z3","Moto Z3 Play","Moto Z2 Force","Moto Z2 Play","Moto Z Force","Moto Z Play","Moto Z"],
+    "Moto X": ["Moto X4","Moto X Style","Moto X Play","Moto X Force","Moto X Pure Edition","Moto X (2nd Gen)","Moto X"],
+    "Moto One": ["Motorola One","Motorola One Power","Motorola One Vision","Motorola One Vision Plus","Motorola One Action","Motorola One Macro","Motorola One Zoom","Motorola One Hyper","Motorola One Fusion","Motorola One Fusion+","Motorola One 5G","Motorola One 5G Ace","Motorola One 5G UW","Motorola One Ace"],
+    "Moto C": ["Moto C","Moto C Plus"],
+    "Moto M": ["Moto M"],
+    "Clásicos": ["Motorola Droid","Motorola Droid 2","Motorola Droid 2 Global","Motorola Droid 3","Motorola Droid 4","Motorola Droid Bionic","Motorola Droid Razr","Motorola Droid Razr Maxx","Motorola Atrix","Motorola Atrix 2","Motorola Atrix HD","Motorola Defy","Motorola Defy+","Motorola Defy Mini","Motorola Defy (2021)","Motorola Defy 2","Motorola Milestone","Motorola Milestone 2","Motorola Milestone 3","Motorola Backflip","Motorola Cliq","Motorola Cliq 2","Motorola Charm","Motorola Photon 4G","Motorola Electrify","Motorola Flipout","Motorola Spice","Motorola Spice XT","Motorola Fire","Motorola Fire XT","Motorola Motoluxe","Motorola Pro","Motorola Pro+","Motorola ROKR E6","Motorola RAZR i","Motorola RAZR HD","Motorola RAZR MAXX","Motorola RAZR M","Motorola RAZR D1","Motorola RAZR D3","Motorola Atrix 3"],
+    "Tablets": ["moto pad 60 pro","moto pad 60 neo","moto pad 60 lite","Moto Tab G75","Moto Tab G70","Moto Tab G62","Moto Tab G20","Moto Tab G16","Moto Tab G06","Moto Tab 8","Moto Tab 10","Moto Tab 10.1","Moto Tab 70","Moto Tab","Motorola Xoom","Motorola Xoom 2","Motorola Xoom 2 Media Edition"]
+  };
+
+  const REDMAGIC = {
+    "RedMagic": ["RedMagic (2018)","Red Magic Mars","Red Magic 3","Red Magic 3S","Red Magic 5G","Red Magic 5S","Red Magic 6","Red Magic 6 Pro","Red Magic 6R","Red Magic 6S","Red Magic 6S Pro","Red Magic 7","Red Magic 7 Pro","Red Magic 7S","Red Magic 7S Pro","Red Magic 8 Pro","Red Magic 8 Pro+","Red Magic 8S Pro","Red Magic 8S Pro+","Red Magic 9 Pro","Red Magic 9 Pro+","Red Magic 9S Pro","Red Magic 9S Pro+","RedMagic 10 Pro","RedMagic 10 Pro+","RedMagic 10 Air","RedMagic 10S Pro","RedMagic 10S Pro+","RedMagic 11 Pro","RedMagic 11 Pro+","RedMagic 11 Air","RedMagic 11S Pro","RedMagic 11S Pro+"],
+    "Tablets": ["RedMagic Nova Tablet","RedMagic Astra","RedMagic Astra 2"]
+  };
+
+  const HUAWEI = {
+    "Mate Series": ["HUAWEI Mate X7","HUAWEI Mate X6","HUAWEI Mate X5","HUAWEI Mate X3","HUAWEI Mate Xs 2","HUAWEI Mate Xs","HUAWEI Mate X2","HUAWEI Mate X","HUAWEI Mate 70 Pro+","HUAWEI Mate 70 Pro","HUAWEI Mate 70","HUAWEI Mate 70 Pro+ RS","HUAWEI Mate 60 Pro+","HUAWEI Mate 60 Pro","HUAWEI Mate 60","HUAWEI Mate 60 RS Ultimate Design","HUAWEI Mate 50 Pro","HUAWEI Mate 50","HUAWEI Mate 50E","HUAWEI Mate 50 RS Porsche Design","HUAWEI Mate 40 Pro+","HUAWEI Mate 40 Pro","HUAWEI Mate 40","HUAWEI Mate 40E","HUAWEI Mate 40 RS Porsche Design","HUAWEI Mate 30 Pro","HUAWEI Mate 30","HUAWEI Mate 30 5G","HUAWEI Mate 30E Pro 5G","HUAWEI Mate 30 RS Porsche Design","HUAWEI Mate 20 Pro","HUAWEI Mate 20","HUAWEI Mate 20 X","HUAWEI Mate 20 X 5G","HUAWEI Mate 20 Lite","HUAWEI Mate 20 RS Porsche Design","HUAWEI Mate 10 Pro","HUAWEI Mate 10","HUAWEI Mate 10 Lite","HUAWEI Mate 9 Pro","HUAWEI Mate 9","HUAWEI Mate 8","HUAWEI Mate 7","HUAWEI Mate S","HUAWEI Mate 2 4G","HUAWEI Ascend Mate7","HUAWEI Ascend Mate2 4G","HUAWEI Ascend Mate","HUAWEI Mate XT Ultimate Design"],
+    "P Series": ["HUAWEI Pura 80 Ultra","HUAWEI Pura 80 Pro","HUAWEI Pura 80","HUAWEI Pura 80 Pro+","HUAWEI Pura 70 Ultra","HUAWEI Pura 70 Pro","HUAWEI Pura 70","HUAWEI Pura 70 Pro+","HUAWEI P60 Pro","HUAWEI P60 Art","HUAWEI P60","HUAWEI P50 Pro","HUAWEI P50","HUAWEI P50 Pocket","HUAWEI P50E","HUAWEI P40 Pro+","HUAWEI P40 Pro","HUAWEI P40","HUAWEI P40 Lite","HUAWEI P40 Lite 5G","HUAWEI P30 Pro","HUAWEI P30","HUAWEI P30 Lite","HUAWEI P20 Pro","HUAWEI P20","HUAWEI P20 Lite","HUAWEI P10 Plus","HUAWEI P10","HUAWEI P10 Lite","HUAWEI P9 Plus","HUAWEI P9","HUAWEI P9 Lite","HUAWEI P8","HUAWEI P8 Lite","HUAWEI P7","HUAWEI P6","HUAWEI Ascend P7","HUAWEI Ascend P6","HUAWEI Ascend P2","HUAWEI Ascend P1"],
+    "nova Series": ["HUAWEI nova 14 Pro","HUAWEI nova 14","HUAWEI nova 14i","HUAWEI nova 13 Pro","HUAWEI nova 13","HUAWEI nova 13i","HUAWEI nova 12 Ultra","HUAWEI nova 12 Pro","HUAWEI nova 12","HUAWEI nova 12i","HUAWEI nova 11 Pro","HUAWEI nova 11","HUAWEI nova 11i","HUAWEI nova 10 Pro","HUAWEI nova 10","HUAWEI nova 10 SE","HUAWEI nova 9 Pro","HUAWEI nova 9","HUAWEI nova 9 SE","HUAWEI nova 8 Pro","HUAWEI nova 8","HUAWEI nova 8i","HUAWEI nova 7 Pro 5G","HUAWEI nova 7 5G","HUAWEI nova 7 SE","HUAWEI nova 7i","HUAWEI nova 6 5G","HUAWEI nova 5 Pro","HUAWEI nova 5T","HUAWEI nova 5","HUAWEI nova 4","HUAWEI nova 3","HUAWEI nova 3i","HUAWEI nova 2s","HUAWEI nova 2","HUAWEI nova"],
+    "nova Y / Y Series": ["HUAWEI nova Y73","HUAWEI nova Y72","HUAWEI nova Y71","HUAWEI nova Y70","HUAWEI nova Y62","HUAWEI nova Y61","HUAWEI nova Y60","HUAWEI nova Y90","HUAWEI nova Y91","HUAWEI Y9a","HUAWEI Y9s","HUAWEI Y9 Prime 2019","HUAWEI Y9 2019","HUAWEI Y8p","HUAWEI Y8s","HUAWEI Y7a","HUAWEI Y7p","HUAWEI Y7 Prime","HUAWEI Y6p","HUAWEI Y6s","HUAWEI Y6 Prime","HUAWEI Y5p","HUAWEI Y5 2019","HUAWEI Y5 Lite","HUAWEI Y9 2018","HUAWEI Y7 2018","HUAWEI Y6 2018","HUAWEI Y5 2017","HUAWEI Y3 2017","HUAWEI Y2"],
+    "P smart": ["HUAWEI P smart 2021","HUAWEI P smart Pro","HUAWEI P smart Z","HUAWEI P smart S","HUAWEI P smart 2019","HUAWEI P smart+ 2019","HUAWEI P smart+","HUAWEI P smart 2018","HUAWEI P smart"],
+    "Foldables": ["HUAWEI Mate X7","HUAWEI Mate X6","HUAWEI Mate X5","HUAWEI Mate X3","HUAWEI Mate Xs 2","HUAWEI Mate Xs","HUAWEI Mate X2","HUAWEI Mate X","HUAWEI Mate XT Ultimate Design","HUAWEI Pocket 2","HUAWEI P50 Pocket"],
+    "Tablets — MatePad Pro": ["HUAWEI MatePad Pro Max","HUAWEI MatePad Pro 13.2 2025","HUAWEI MatePad Pro 12.2 2025","HUAWEI MatePad Pro 13.2 2023","HUAWEI MatePad Pro 12.2 2024","HUAWEI MatePad Pro 11 2024","HUAWEI MatePad Pro 11 2022","HUAWEI MatePad Pro 12.6 2022","HUAWEI MatePad Pro 12.6 2021","HUAWEI MatePad Pro 10.8 2021","HUAWEI MatePad Pro 10.8 2019","HUAWEI MatePad Pro 5G","HUAWEI MatePad Pro 10.8"],
+    "Tablets — MatePad": ["HUAWEI MatePad Mini","HUAWEI MatePad Air 2026","HUAWEI MatePad Air","HUAWEI MatePad 12 X 2025","HUAWEI MatePad 12 X","HUAWEI MatePad 11.5 S 2026","HUAWEI MatePad 11.5 S","HUAWEI MatePad 11.5 2025","HUAWEI MatePad 11.5 2024","HUAWEI MatePad 11.5","HUAWEI MatePad 11 2023","HUAWEI MatePad 11","HUAWEI MatePad 10.8","HUAWEI MatePad 10.4 2022","HUAWEI MatePad 10.4 2020","HUAWEI MatePad Paper"],
+    "Tablets — MatePad SE": ["HUAWEI MatePad SE 11","HUAWEI MatePad SE 10.4","HUAWEI MatePad SE 10.4 2022","HUAWEI MatePad T 10s","HUAWEI MatePad T 10","HUAWEI MatePad T 8"],
+    "Tablets — MediaPad": ["HUAWEI MediaPad M6 10.8","HUAWEI MediaPad M6 8.4","HUAWEI MediaPad M5 Pro 10.8","HUAWEI MediaPad M5 10.8","HUAWEI MediaPad M5 8.4","HUAWEI MediaPad M5 Lite 10.1","HUAWEI MediaPad M3 Lite 10","HUAWEI MediaPad M3 Lite 8","HUAWEI MediaPad M3","HUAWEI MediaPad M2 10.0","HUAWEI MediaPad M2 8.0","HUAWEI MediaPad X2","HUAWEI MediaPad X1","HUAWEI MediaPad 10 Link+","HUAWEI MediaPad 10 Link","HUAWEI MediaPad 7 Youth2","HUAWEI MediaPad 7 Vogue","HUAWEI MediaPad 7 Lite","HUAWEI MediaPad 7"],
+    "Tablets — Honor-era / Other": ["HUAWEI MediaPad T5","HUAWEI MediaPad T3 10","HUAWEI MediaPad T3 8","HUAWEI MediaPad T3 7","HUAWEI MediaPad T2 10.0 Pro","HUAWEI MediaPad T2 10.0","HUAWEI MediaPad T2 7.0 Pro","HUAWEI MediaPad T2 7.0" ]
+  };
+
+  const TECNO = {
+    "Camon": ["TECNO CAMON 40 Premier 5G","TECNO CAMON 40 Pro 5G","TECNO CAMON 40 Pro","TECNO CAMON 40","TECNO CAMON 30 Premier 5G","TECNO CAMON 30 Pro 5G","TECNO CAMON 30 5G","TECNO CAMON 30","TECNO CAMON 30S Pro","TECNO CAMON 30S","TECNO CAMON 20 Premier 5G","TECNO CAMON 20 Pro 5G","TECNO CAMON 20 Pro","TECNO CAMON 20","TECNO CAMON 20 4G","TECNO CAMON 19 Pro 5G","TECNO CAMON 19 Pro","TECNO CAMON 19","TECNO CAMON 18 Premier","TECNO CAMON 18 Pro","TECNO CAMON 18","TECNO CAMON 17 Pro","TECNO CAMON 17","TECNO CAMON 16 Premier","TECNO CAMON 16 Pro","TECNO CAMON 16"],
+    "POVA": ["TECNO POVA 7 Ultra 5G","TECNO POVA 7 Pro 5G","TECNO POVA 7 5G","TECNO POVA 7","TECNO POVA 6 Pro 5G","TECNO POVA 6","TECNO POVA 5 Pro 5G","TECNO POVA 5","TECNO POVA 4 Pro","TECNO POVA 4","TECNO POVA 3","TECNO POVA 2","TECNO POVA Neo 3","TECNO POVA Neo 2","TECNO POVA Neo"],
+    "SPARK": ["TECNO SPARK 40 Pro+","TECNO SPARK 40 Pro","TECNO SPARK 40","TECNO SPARK 40C","TECNO SPARK 30 Pro","TECNO SPARK 30","TECNO SPARK 30C","TECNO SPARK 20 Pro+","TECNO SPARK 20 Pro","TECNO SPARK 20","TECNO SPARK 20C","TECNO SPARK 10 Pro","TECNO SPARK 10","TECNO SPARK 10C","TECNO SPARK 9 Pro","TECNO SPARK 9","TECNO SPARK 8 Pro","TECNO SPARK 8","TECNO SPARK 7 Pro","TECNO SPARK 7","TECNO SPARK 6 Go","TECNO SPARK 6","TECNO SPARK 5 Pro","TECNO SPARK 5"],
+    "Phantom": ["TECNO PHANTOM V Fold2 5G","TECNO PHANTOM V Flip2 5G","TECNO PHANTOM V Fold 5G","TECNO PHANTOM V Flip 5G","TECNO PHANTOM X2 Pro 5G","TECNO PHANTOM X2 5G","TECNO PHANTOM X","TECNO PHANTOM 9"],
+    "Tablets": ["TECNO MEGAPAD 11","TECNO MEGAPAD 10","TECNO MEGAPAD 12"]
+  };
+
+  const INFINIX = {
+    "GT": ["Infinix GT 30 Pro","Infinix GT 30","Infinix GT 20 Pro","Infinix GT 10 Pro","Infinix GT 10 Pro Racing Edition","Infinix GT 5 Pro","Infinix GT 5","Infinix GT 3 Pro","Infinix GT 2 Pro","Infinix GT 2"],
+    "Note": ["Infinix Note 50 Pro+ 5G","Infinix Note 50 Pro 4G","Infinix Note 50X 5G","Infinix Note 50 4G","Infinix Note 40 Pro+ 5G","Infinix Note 40 Pro 5G","Infinix Note 40 Pro 4G","Infinix Note 40","Infinix Note 30 Pro","Infinix Note 30 VIP","Infinix Note 30","Infinix Note 30 5G","Infinix Note 12 Pro 5G","Infinix Note 12 Pro 4G","Infinix Note 12","Infinix Note 11 Pro","Infinix Note 11"],
+    "Hot": ["Infinix Hot 60 Pro+","Infinix Hot 60 Pro","Infinix Hot 60","Infinix Hot 50 Pro+","Infinix Hot 50 Pro","Infinix Hot 50","Infinix Hot 50i","Infinix Hot 40 Pro","Infinix Hot 40","Infinix Hot 40i","Infinix Hot 30","Infinix Hot 30i","Infinix Hot 20S","Infinix Hot 20","Infinix Hot 12 Pro","Infinix Hot 12","Infinix Hot 11S","Infinix Hot 11"],
+    "Zero": ["Infinix Zero 40 5G","Infinix Zero 40","Infinix Zero 30 5G","Infinix Zero 30","Infinix Zero Ultra","Infinix Zero 20","Infinix Zero X Pro","Infinix Zero X","Infinix Zero 8"],
+    "Smart": ["Infinix Smart 10","Infinix Smart 9","Infinix Smart 8 Pro","Infinix Smart 8","Infinix Smart 7 Plus","Infinix Smart 7","Infinix Smart 6 Plus","Infinix Smart 6"]
+  };
+
+  const ITEL = {
+    "S Series": ["itel S25 Ultra","itel S25","itel S24","itel S23+","itel S23","itel S18","itel S17","itel S16 Pro","itel S16"],
+    "P Series": ["itel P65","itel P55 5G","itel P55","itel P40+","itel P40","itel P38 Pro","itel P38","itel P37","itel P36 Pro","itel P36"],
+    "A Series": ["itel A90","itel A80","itel A70","itel A60s","itel A60","itel A58 Pro","itel A58","itel A56","itel A49","itel A48","itel A47","itel A46"],
+    "Vision": ["itel Vision 3 Plus","itel Vision 3","itel Vision 2","itel Vision 1 Pro","itel Vision 1"]
+  };
+
+  const ONEPLUS = {
+    "Number Series": ["OnePlus 13","OnePlus 13R","OnePlus 12","OnePlus 12R","OnePlus 11","OnePlus 11R","OnePlus 10 Pro","OnePlus 10T","OnePlus 10R","OnePlus 9 Pro","OnePlus 9","OnePlus 9R","OnePlus 8 Pro","OnePlus 8T","OnePlus 8","OnePlus 7T Pro","OnePlus 7T","OnePlus 7 Pro","OnePlus 7","OnePlus 6T","OnePlus 6","OnePlus 5T","OnePlus 5","OnePlus 3T","OnePlus 3","OnePlus 2","OnePlus One"],
+    "Nord": ["OnePlus Nord 5","OnePlus Nord CE5","OnePlus Nord 4","OnePlus Nord CE4","OnePlus Nord CE4 Lite","OnePlus Nord 3","OnePlus Nord CE3","OnePlus Nord CE3 Lite","OnePlus Nord 2T","OnePlus Nord 2","OnePlus Nord CE 2","OnePlus Nord CE 2 Lite","OnePlus Nord CE","OnePlus Nord N30 SE","OnePlus Nord N30","OnePlus Nord N20 SE","OnePlus Nord N20 5G","OnePlus Nord N10 5G","OnePlus Nord N200 5G","OnePlus Nord N100","OnePlus Nord N200"],
+    "Open": ["OnePlus Open","OnePlus Open 2"]
+  };
+
+  const OPPO = {
+    "Find X": ["OPPO Find X8 Ultra","OPPO Find X8 Pro","OPPO Find X8","OPPO Find X7 Ultra","OPPO Find X7","OPPO Find X6 Pro","OPPO Find X6","OPPO Find X5 Pro","OPPO Find X5","OPPO Find X3 Pro","OPPO Find X3","OPPO Find X2 Pro","OPPO Find X2","OPPO Find X"],
+    "Reno": ["OPPO Reno14 Pro 5G","OPPO Reno14 5G","OPPO Reno14 F 5G","OPPO Reno13 Pro 5G","OPPO Reno13 5G","OPPO Reno13 F 5G","OPPO Reno12 Pro 5G","OPPO Reno12 5G","OPPO Reno12 F 5G","OPPO Reno11 Pro 5G","OPPO Reno11 5G","OPPO Reno11 F 5G","OPPO Reno10 Pro+ 5G","OPPO Reno10 Pro 5G","OPPO Reno10 5G","OPPO Reno8 Pro 5G","OPPO Reno8 5G","OPPO Reno8 T 5G","OPPO Reno7 Pro 5G","OPPO Reno7 5G","OPPO Reno6 Pro 5G","OPPO Reno6 5G"],
+    "A Series": ["OPPO A5 Pro 5G","OPPO A5 Pro","OPPO A5 5G","OPPO A5","OPPO A3 Pro","OPPO A3","OPPO A3x","OPPO A2 Pro","OPPO A2","OPPO A1 Pro","OPPO A1","OPPO A98 5G","OPPO A78 5G","OPPO A78","OPPO A77 5G","OPPO A77","OPPO A76","OPPO A74 5G","OPPO A74","OPPO A54 5G","OPPO A54","OPPO A53","OPPO A52","OPPO A31","OPPO A16","OPPO A15"],
+    "F Series": ["OPPO F27 Pro+ 5G","OPPO F27 Pro 5G","OPPO F27 5G","OPPO F25 Pro 5G","OPPO F23 5G","OPPO F21 Pro 5G","OPPO F21 Pro","OPPO F19 Pro+ 5G","OPPO F19 Pro","OPPO F19","OPPO F17 Pro","OPPO F17","OPPO F15","OPPO F11 Pro","OPPO F11","OPPO F9 Pro","OPPO F9"]
+  };
+
+  const VIVO = {
+    "X Series": ["vivo X200 Ultra","vivo X200 Pro","vivo X200","vivo X100 Ultra","vivo X100 Pro","vivo X100","vivo X90 Pro+","vivo X90 Pro","vivo X90","vivo X80 Pro","vivo X80","vivo X70 Pro+","vivo X70 Pro","vivo X70","vivo X60 Pro+","vivo X60 Pro","vivo X60","vivo X50 Pro+","vivo X50 Pro","vivo X50"],
+    "V Series": ["vivo V50","vivo V50 Lite","vivo V40 Pro","vivo V40","vivo V40 Lite","vivo V30 Pro","vivo V30","vivo V30 Lite","vivo V29 Pro","vivo V29","vivo V29e","vivo V27 Pro","vivo V27","vivo V27e","vivo V25 Pro","vivo V25","vivo V23 Pro","vivo V23","vivo V23e","vivo V21","vivo V20","vivo V19"],
+    "Y Series": ["vivo Y400 Pro","vivo Y400","vivo Y300 Pro","vivo Y300","vivo Y200 Pro","vivo Y200","vivo Y100","vivo Y78","vivo Y77","vivo Y76 5G","vivo Y75","vivo Y73","vivo Y72 5G","vivo Y55 5G","vivo Y55","vivo Y35","vivo Y33s","vivo Y22","vivo Y21","vivo Y20","vivo Y19"],
+    "Foldable": ["vivo X Fold3 Pro","vivo X Fold3","vivo X Fold2","vivo X Fold+","vivo X Fold","vivo X Flip"]
+  };
+
+  const REALME = {
+    "GT": ["realme GT 7 Pro","realme GT 7","realme GT 6","realme GT 6T","realme GT 5 Pro","realme GT 5","realme GT 3","realme GT 2 Pro","realme GT 2","realme GT Neo 6","realme GT Neo 6 SE","realme GT Neo 5","realme GT Neo 5 SE","realme GT Neo 3","realme GT Neo 3T"],
+    "Number Series": ["realme 14 Pro+ 5G","realme 14 Pro 5G","realme 14 5G","realme 13 Pro+ 5G","realme 13 Pro 5G","realme 13 5G","realme 12 Pro+ 5G","realme 12 Pro 5G","realme 12 5G","realme 11 Pro+ 5G","realme 11 Pro 5G","realme 11 5G","realme 10 Pro+ 5G","realme 10 Pro 5G","realme 10","realme 9 Pro+ 5G","realme 9 Pro 5G","realme 9 5G","realme 9","realme 8 Pro","realme 8","realme 7 Pro","realme 7"],
+    "C Series": ["realme C75","realme C75x","realme C65","realme C63","realme C61","realme C55","realme C53","realme C51","realme C35","realme C33","realme C31","realme C30","realme C25Y","realme C25","realme C21Y","realme C21","realme C20"],
+    "Narzo": ["realme Narzo 80 Pro 5G","realme Narzo 80x 5G","realme Narzo 70 Pro 5G","realme Narzo 70 5G","realme Narzo 60 Pro 5G","realme Narzo 60 5G","realme Narzo 50 Pro 5G","realme Narzo 50 5G","realme Narzo 50A","realme Narzo 30 Pro 5G","realme Narzo 30","realme Narzo 20 Pro","realme Narzo 20"]
+  };
+
+  const NOTHING = {
+    "Phone": ["Nothing Phone (3)","Nothing Phone (3a) Pro","Nothing Phone (3a)","Nothing Phone (2a) Plus","Nothing Phone (2a)","Nothing Phone (2)","Nothing Phone (1)"],
+    "CMF": ["CMF Phone 2 Pro","CMF Phone 1"]
+  };
+
+  const ASUS = {
+    "ROG Phone": ["ASUS ROG Phone 9 Pro","ASUS ROG Phone 9","ASUS ROG Phone 8 Pro","ASUS ROG Phone 8","ASUS ROG Phone 7 Ultimate","ASUS ROG Phone 7","ASUS ROG Phone 6D Ultimate","ASUS ROG Phone 6D","ASUS ROG Phone 6 Pro","ASUS ROG Phone 6","ASUS ROG Phone 5s Pro","ASUS ROG Phone 5s","ASUS ROG Phone 5 Pro","ASUS ROG Phone 5","ASUS ROG Phone 3","ASUS ROG Phone II","ASUS ROG Phone"],
+    "Zenfone": ["ASUS Zenfone 12 Ultra","ASUS Zenfone 11 Ultra","ASUS Zenfone 10","ASUS Zenfone 9","ASUS Zenfone 8","ASUS Zenfone 8 Flip","ASUS Zenfone 7 Pro","ASUS Zenfone 7","ASUS Zenfone 6","ASUS Zenfone 5Z","ASUS Zenfone 5","ASUS Zenfone 4"],
+    "Tablets": ["ASUS ROG Flow Z13","ASUS ZenPad 3S 10","ASUS ZenPad 10","ASUS ZenPad 8","ASUS ZenPad 7"]
+  };
+
+  const SONY = {
+    "Xperia 1": ["Sony Xperia 1 VII","Sony Xperia 1 VI","Sony Xperia 1 V","Sony Xperia 1 IV","Sony Xperia 1 III","Sony Xperia 1 II","Sony Xperia 1"],
+    "Xperia 5": ["Sony Xperia 5 V","Sony Xperia 5 IV","Sony Xperia 5 III","Sony Xperia 5 II","Sony Xperia 5"],
+    "Xperia 10": ["Sony Xperia 10 VI","Sony Xperia 10 V","Sony Xperia 10 IV","Sony Xperia 10 III","Sony Xperia 10 II","Sony Xperia 10"],
+    "Xperia Other": ["Sony Xperia PRO-I","Sony Xperia PRO","Sony Xperia XZ3","Sony Xperia XZ2 Premium","Sony Xperia XZ2","Sony Xperia XZ1","Sony Xperia XZ Premium","Sony Xperia X Performance","Sony Xperia XZ","Sony Xperia X"]
+  };
+
+  const TCL = {
+    "40 Series": ["TCL 40 NxtPaper 5G","TCL 40 NxtPaper","TCL 40 R 5G","TCL 40 SE","TCL 40 X 5G","TCL 40 XL","TCL 40 XE 5G","TCL 40"],
+    "50 Series": ["TCL 50 Pro NxtPaper 5G","TCL 50 NxtPaper 5G","TCL 50 XL 5G","TCL 50 XE 5G","TCL 50 5G"],
+    "30 Series": ["TCL 30 5G","TCL 30+","TCL 30","TCL 30 SE","TCL 30 XE 5G","TCL 30 V 5G"],
+    "Tablets": ["TCL NXTPAPER 14","TCL NXTPAPER 11 Plus","TCL NXTPAPER 11","TCL Tab 10 5G","TCL Tab 10L","TCL Tab 8"]
+  };
+
+  const ALCATEL = {
+    "1 Series": ["Alcatel 1V","Alcatel 1B","Alcatel 1S","Alcatel 1SE","Alcatel 1C","Alcatel 1"],
+    "3 Series": ["Alcatel 3L","Alcatel 3X","Alcatel 3V","Alcatel 3"],
+    "5 Series": ["Alcatel 5V","Alcatel 5"],
+    "Other": ["Alcatel 7","Alcatel 6","Alcatel 3T 10","Alcatel 3T 8","Alcatel 1T 10","Alcatel 1T 7"]
+  };
+
+  const LENOVO = {
+    "Legion Phone": ["Lenovo Legion Phone Duel 2","Lenovo Legion Phone Duel","Lenovo Legion Phone Duel 2 Pro"],
+    "Tablets": ["Lenovo Legion Tab Gen 3","Lenovo Legion Tab","Lenovo Tab Extreme","Lenovo Tab P12 Pro","Lenovo Tab P12","Lenovo Tab P11 Pro Gen 2","Lenovo Tab P11 Pro","Lenovo Tab P11","Lenovo Tab M11","Lenovo Tab M10 Plus 3rd Gen","Lenovo Tab M10 HD","Lenovo Tab M8","Lenovo Tab M7","Lenovo Yoga Tab 13","Lenovo Yoga Tab 11","Lenovo Yoga Tab 3 Pro"],
+    "K Series": ["Lenovo K14 Plus","Lenovo K13 Pro","Lenovo K13","Lenovo K12 Pro","Lenovo K12","Lenovo K10 Note","Lenovo K10"]
+  };
+
+  const PIXEL = {
+    "Pixel": ["Google Pixel 9 Pro XL","Google Pixel 9 Pro","Google Pixel 9","Google Pixel 9a","Google Pixel 8 Pro","Google Pixel 8","Google Pixel 8a","Google Pixel 7 Pro","Google Pixel 7","Google Pixel 7a","Google Pixel 6 Pro","Google Pixel 6","Google Pixel 6a","Google Pixel 5a","Google Pixel 5","Google Pixel 4a 5G","Google Pixel 4a","Google Pixel 4 XL","Google Pixel 4","Google Pixel 3a XL","Google Pixel 3a","Google Pixel 3 XL","Google Pixel 3","Google Pixel 2 XL","Google Pixel 2","Google Pixel XL","Google Pixel"],
+    "Fold": ["Google Pixel 9 Pro Fold","Google Pixel Fold"]
+  };
+
+  const BRANDS = {
+    "Samsung": SAMSUNG,
+    "Xiaomi": XIAOMI,
+    "Apple": APPLE,
+    "Huawei": HUAWEI,
+    "Honor": HONOR,
+    "Motorola": MOTOROLA,
+    "ZTE": ZTE,
+    "RedMagic": REDMAGIC,
+    "TECNO": TECNO,
+    "Infinix": INFINIX,
+    "itel": ITEL,
+    "OnePlus": ONEPLUS,
+    "OPPO": OPPO,
+    "vivo": VIVO,
+    "realme": REALME,
+    "Nothing": NOTHING,
+    "ASUS": ASUS,
+    "Sony": SONY,
+    "TCL": TCL,
+    "Alcatel": ALCATEL,
+    "Lenovo": LENOVO,
+    "Google": PIXEL
+  };
+
+  /* ---------- EXPANSIÓN DE CATÁLOGO ----------
+     Catálogo ampliado: se suman generaciones y variantes históricas
+     sin reemplazar los modelos que ya estaban cargados.
+  ---------- */
+  const EXTRA_MODELS = {
+    "TECNO": {
+      "PHANTOM": ["TECNO PHANTOM X2 Pro","TECNO PHANTOM X2","TECNO PHANTOM X","TECNO PHANTOM 9","TECNO PHANTOM 8","TECNO PHANTOM 6 Plus","TECNO PHANTOM 6","TECNO PHANTOM V Fold","TECNO PHANTOM V Fold2 5G","TECNO PHANTOM V Flip","TECNO PHANTOM V Flip2 5G","TECNO PHANTOM V Fold2 5G","TECNO PHANTOM V Flip 5G"],
+      "CAMON": ["TECNO CAMON 50 Ultra 5G","TECNO CAMON 50 Pro 5G","TECNO CAMON 50","TECNO CAMON 40 Pro 5G","TECNO CAMON 40 Pro","TECNO CAMON 40","TECNO CAMON 30 Premier 5G","TECNO CAMON 30 Pro 5G","TECNO CAMON 30 5G","TECNO CAMON 30","TECNO CAMON 30S Pro","TECNO CAMON 30S","TECNO CAMON 20 Premier 5G","TECNO CAMON 20 Pro 5G","TECNO CAMON 20 Pro","TECNO CAMON 20","TECNO CAMON 19 Pro 5G","TECNO CAMON 19 Pro","TECNO CAMON 19","TECNO CAMON 18 Premier","TECNO CAMON 18 Pro","TECNO CAMON 18","TECNO CAMON 17 Pro","TECNO CAMON 17","TECNO CAMON 16 Premier","TECNO CAMON 16 Pro","TECNO CAMON 16","TECNO CAMON 15 Premier","TECNO CAMON 15","TECNO CAMON 12 Pro","TECNO CAMON 12","TECNO CAMON 11 Pro","TECNO CAMON 11","TECNO CAMON X Pro","TECNO CAMON X","TECNO CAMON CX","TECNO CAMON CX Air","TECNO CAMON CM"],
+      "POVA": ["TECNO POVA 8 Pro 5G","TECNO POVA 8","TECNO POVA 7 Ultra 5G","TECNO POVA 7 Pro 5G","TECNO POVA 7 5G","TECNO POVA 7","TECNO POVA 6 Pro 5G","TECNO POVA 6 Neo","TECNO POVA 6","TECNO POVA 5 Pro 5G","TECNO POVA 5","TECNO POVA 4 Pro","TECNO POVA 4","TECNO POVA 3","TECNO POVA 2","TECNO POVA Neo 3","TECNO POVA Neo 2","TECNO POVA Neo","TECNO POVA"],
+      "SPARK": ["TECNO SPARK 40 Pro+","TECNO SPARK 40 Pro","TECNO SPARK 40","TECNO SPARK 40C","TECNO SPARK 30 Pro","TECNO SPARK 30 5G","TECNO SPARK 30","TECNO SPARK 30C","TECNO SPARK 30 Limited Edition","TECNO SPARK 20 Pro+","TECNO SPARK 20 Pro","TECNO SPARK 20","TECNO SPARK 20C","TECNO SPARK 20C NFC","TECNO SPARK 10 Pro","TECNO SPARK 10","TECNO SPARK 10C","TECNO SPARK 9 Pro","TECNO SPARK 9T","TECNO SPARK 9","TECNO SPARK 8 Pro","TECNO SPARK 8T","TECNO SPARK 8","TECNO SPARK 7 Pro","TECNO SPARK 7T","TECNO SPARK 7","TECNO SPARK 6 Go","TECNO SPARK 6 Air","TECNO SPARK 6","TECNO SPARK 5 Pro","TECNO SPARK 5","TECNO SPARK 4","TECNO SPARK 3 Pro","TECNO SPARK 3","TECNO SPARK 2","TECNO SPARK" ]
+    },
+    "Infinix": {
+      "NOTE": ["Infinix NOTE 50 Pro+ 5G","Infinix NOTE 50 Pro","Infinix NOTE 50","Infinix NOTE 40 Pro+ 5G","Infinix NOTE 40 Pro 5G","Infinix NOTE 40 Pro","Infinix NOTE 40","Infinix NOTE 30 Pro","Infinix NOTE 30 VIP","Infinix NOTE 30","Infinix NOTE 30 5G","Infinix NOTE 12 VIP","Infinix NOTE 12 Pro 5G","Infinix NOTE 12 Pro","Infinix NOTE 12","Infinix NOTE 11 Pro","Infinix NOTE 11","Infinix NOTE 10 Pro","Infinix NOTE 10","Infinix NOTE 8i","Infinix NOTE 8","Infinix NOTE 7","Infinix NOTE 6","Infinix NOTE 5"],
+      "ZERO": ["Infinix ZERO 40 5G","Infinix ZERO 40","Infinix ZERO 30 5G","Infinix ZERO 30","Infinix ZERO 20","Infinix ZERO ULTRA","Infinix ZERO X Pro","Infinix ZERO X","Infinix ZERO 8","Infinix ZERO 8i","Infinix ZERO 6"],
+      "GT": ["Infinix GT 30 Pro","Infinix GT 20 Pro","Infinix GT 10 Pro","Infinix GT 5 Pro","Infinix GT 5","Infinix GT 3 Pro","Infinix GT 2 Pro","Infinix GT 2","Infinix GT 2 Pro 5G"],
+      "HOT": ["Infinix HOT 60 Pro+","Infinix HOT 60 Pro","Infinix HOT 60","Infinix HOT 60i","Infinix HOT 50 Pro+","Infinix HOT 50 Pro","Infinix HOT 50","Infinix HOT 50i","Infinix HOT 40 Pro","Infinix HOT 40","Infinix HOT 40i","Infinix HOT 30 Play","Infinix HOT 30","Infinix HOT 30i","Infinix HOT 20S","Infinix HOT 20","Infinix HOT 20i","Infinix HOT 12 Play","Infinix HOT 12","Infinix HOT 11S","Infinix HOT 11","Infinix HOT 10","Infinix HOT 9","Infinix HOT 8","Infinix HOT 7","Infinix HOT 6"],
+      "SMART": ["Infinix Smart 10 Plus","Infinix Smart 10","Infinix Smart 9 Plus","Infinix Smart 9","Infinix Smart 8 Plus","Infinix Smart 8","Infinix Smart 7 Plus","Infinix Smart 7","Infinix Smart 6 Plus","Infinix Smart 6","Infinix Smart 5","Infinix Smart 4","Infinix Smart 3 Plus","Infinix Smart 2" ]
+    },
+    "itel": {
+      "P Series": ["itel P55 5G","itel P55","itel P55+","itel P40","itel P40+","itel P38","itel P37","itel P36","itel P33 Plus","itel P33","itel P32"],
+      "S Series": ["itel S25 Ultra","itel S25","itel S24","itel S23+","itel S23","itel S18 Pro","itel S18","itel S17","itel S16 Pro","itel S16","itel S15","itel S13"],
+      "A Series": ["itel A90","itel A80","itel A70","itel A60s","itel A60","itel A58","itel A57","itel A56","itel A48","itel A47","itel A46","itel A45","itel A44 Air","itel A44","itel A41","itel A40"],
+      "Vision": ["itel Vision 3 Plus","itel Vision 3","itel Vision 2","itel Vision 2s","itel Vision 1 Pro","itel Vision 1"],
+      "Tablets": ["itel VistaTab 30 Pro","itel VistaTab 10" ]
+    },
+    "OnePlus": {
+      "Number Series": ["OnePlus 13","OnePlus 13R","OnePlus 13T","OnePlus 12","OnePlus 12R","OnePlus 11","OnePlus 11R","OnePlus 10 Pro","OnePlus 10T","OnePlus 10R","OnePlus 9 Pro","OnePlus 9","OnePlus 9R","OnePlus 9RT","OnePlus 8 Pro","OnePlus 8T","OnePlus 8","OnePlus 7T Pro","OnePlus 7T","OnePlus 7 Pro","OnePlus 7","OnePlus 6T","OnePlus 6","OnePlus 5T","OnePlus 5","OnePlus 3T","OnePlus 3","OnePlus 2","OnePlus One"],
+      "Nord": ["OnePlus Nord 5","OnePlus Nord CE5","OnePlus Nord 4","OnePlus Nord CE4","OnePlus Nord CE4 Lite","OnePlus Nord 3","OnePlus Nord CE3","OnePlus Nord CE3 Lite","OnePlus Nord 2T","OnePlus Nord 2","OnePlus Nord CE 2","OnePlus Nord CE 2 Lite","OnePlus Nord CE","OnePlus Nord N30 SE","OnePlus Nord N30","OnePlus Nord N20 SE","OnePlus Nord N20","OnePlus Nord N10 5G","OnePlus Nord N100","OnePlus Nord N200 5G","OnePlus Nord N300 5G","OnePlus Nord N30 SE 5G","OnePlus Nord 10 5G"],
+      "Open / Fold": ["OnePlus Open","OnePlus Open Apex Edition"]
+    },
+    "OPPO": {
+      "Find X": ["OPPO Find X9 Ultra","OPPO Find X9 Pro","OPPO Find X9","OPPO Find X8 Ultra","OPPO Find X8 Pro","OPPO Find X8","OPPO Find X7 Ultra","OPPO Find X7","OPPO Find X6 Pro","OPPO Find X6","OPPO Find X5 Pro","OPPO Find X5","OPPO Find X3 Pro","OPPO Find X3","OPPO Find X2 Pro","OPPO Find X2","OPPO Find X"],
+      "Find N": ["OPPO Find N6","OPPO Find N5","OPPO Find N3","OPPO Find N3 Flip","OPPO Find N2","OPPO Find N2 Flip","OPPO Find N"],
+      "Reno": ["OPPO Reno16 Pro 5G","OPPO Reno16 F 5G","OPPO Reno16 FS 5G","OPPO Reno15 Pro","OPPO Reno15","OPPO Reno14 Pro 5G","OPPO Reno14 F 5G","OPPO Reno14 5G","OPPO Reno13 Pro 5G","OPPO Reno13 5G","OPPO Reno13 F 5G","OPPO Reno12 Pro 5G","OPPO Reno12 5G","OPPO Reno12 F 5G","OPPO Reno11 Pro 5G","OPPO Reno11 5G","OPPO Reno11 F 5G","OPPO Reno10 Pro+ 5G","OPPO Reno10 Pro 5G","OPPO Reno10 5G","OPPO Reno8 Pro 5G","OPPO Reno8 5G","OPPO Reno7 Pro 5G","OPPO Reno7 5G","OPPO Reno6 Pro 5G","OPPO Reno6 5G","OPPO Reno5 Pro 5G","OPPO Reno5 5G","OPPO Reno4 Pro","OPPO Reno4","OPPO Reno3 Pro","OPPO Reno3","OPPO Reno2 Z","OPPO Reno2","OPPO Reno Z","OPPO Reno"],
+      "A Series": ["OPPO A6 Pro 5G","OPPO A6c","OPPO A5 Pro 5G","OPPO A5 5G","OPPO A5","OPPO A60","OPPO A40","OPPO A58","OPPO A78 5G","OPPO A78","OPPO A77 5G","OPPO A77","OPPO A76","OPPO A74 5G","OPPO A74","OPPO A57","OPPO A55","OPPO A54 5G","OPPO A54","OPPO A53","OPPO A52","OPPO A31","OPPO A16","OPPO A15","OPPO A12","OPPO A9 2020","OPPO A5 2020","OPPO A3s","OPPO A1k"]
+    },
+    "vivo": {
+      "X Series": ["vivo X200 Ultra","vivo X200 Pro","vivo X200","vivo X100 Ultra","vivo X100 Pro","vivo X100","vivo X90 Pro+","vivo X90 Pro","vivo X90","vivo X80 Pro","vivo X80","vivo X70 Pro+","vivo X70 Pro","vivo X70","vivo X60 Pro+","vivo X60 Pro","vivo X60","vivo X50 Pro+","vivo X50 Pro","vivo X50","vivo X30 Pro","vivo X30","vivo X27 Pro","vivo X27","vivo X23","vivo X21","vivo X20","vivo X9"],
+      "V Series": ["vivo V60","vivo V50","vivo V40 Pro","vivo V40","vivo V40 SE","vivo V30 Pro","vivo V30","vivo V30 Lite","vivo V29 Pro","vivo V29","vivo V29e","vivo V27 Pro","vivo V27","vivo V27e","vivo V25 Pro","vivo V25","vivo V25e","vivo V23 Pro","vivo V23","vivo V23e","vivo V21","vivo V20 Pro","vivo V20","vivo V19"],
+      "Y Series": ["vivo Y400 Pro","vivo Y400","vivo Y300 Pro","vivo Y300","vivo Y200 Pro","vivo Y200","vivo Y100","vivo Y78","vivo Y77","vivo Y76","vivo Y75","vivo Y73","vivo Y72","vivo Y71","vivo Y55","vivo Y52","vivo Y35","vivo Y33s","vivo Y22","vivo Y21","vivo Y20","vivo Y19","vivo Y17","vivo Y15","vivo Y12","vivo Y11"],
+      "T Series": ["vivo T4 Ultra","vivo T4 Pro","vivo T4x","vivo T3 Ultra","vivo T3 Pro","vivo T3x","vivo T3","vivo T2 Pro","vivo T2x","vivo T2"],
+      "S Series": ["vivo S20 Pro","vivo S20","vivo S19 Pro","vivo S19","vivo S18 Pro","vivo S18","vivo S17 Pro","vivo S17","vivo S16 Pro","vivo S16","vivo S15 Pro","vivo S15","vivo S12 Pro","vivo S12","vivo S10 Pro","vivo S10"]
+    },
+    "realme": {
+      "GT": ["realme GT 8 Pro","realme GT 8","realme GT 7 Pro","realme GT 7","realme GT 7T","realme GT 6","realme GT 6T","realme GT 5 Pro","realme GT 5","realme GT 3","realme GT 2 Pro","realme GT 2","realme GT Neo 6 SE","realme GT Neo 5","realme GT Neo 3T","realme GT Neo 3","realme GT Neo 2","realme GT"],
+      "P Series": ["realme P4 Power 5G","realme P4x","realme P4 Lite","realme P4","realme P3 Ultra 5G","realme P3 5G","realme P3","realme P3x","realme P2 Pro 5G","realme P1 Pro 5G","realme P1 5G"],
+      "Number Series": ["realme 16 Pro+","realme 16 Pro","realme 16","realme 15 Pro","realme 15","realme 14 Pro+","realme 14 Pro","realme 14x","realme 13 Pro+","realme 13 Pro","realme 13+","realme 13","realme 12 Pro+","realme 12 Pro","realme 12+","realme 12","realme 11 Pro+","realme 11 Pro","realme 11x","realme 11","realme 10 Pro+","realme 10 Pro","realme 10","realme 9 Pro+","realme 9 Pro","realme 9i","realme 9","realme 8 Pro","realme 8","realme 7 Pro","realme 7","realme 6 Pro","realme 6"],
+      "C Series": ["realme C100 5G","realme C100","realme C85 Pro","realme C85 5G","realme C85","realme C75","realme C71","realme C67","realme C65","realme C63","realme C61","realme C55","realme C53","realme C51","realme C35","realme C33","realme C31","realme C30","realme C25Y","realme C25","realme C21Y","realme C21","realme C20","realme C15","realme C12","realme C11"],
+      "Narzo": ["realme Narzo 80 Pro 5G","realme Narzo 80x 5G","realme Narzo 70 Pro 5G","realme Narzo 70x 5G","realme Narzo 70","realme Narzo 60 Pro 5G","realme Narzo 60 5G","realme Narzo 50 Pro 5G","realme Narzo 50 5G","realme Narzo 50A","realme Narzo 30 Pro 5G","realme Narzo 30","realme Narzo 20 Pro","realme Narzo 20","realme Narzo 10"],
+      "Note": ["realme Note 80","realme Note 70","realme Note 60x","realme Note 60","realme Note 50"]
+    },
+    "Nothing": {
+      "Phone": ["Nothing Phone (4a) Pro","Nothing Phone (4a)","Nothing Phone (4b)","Nothing Phone (3)","Nothing Phone (3a) Pro","Nothing Phone (3a) Lite","Nothing Phone (3a)","Nothing Phone (2a) Plus","Nothing Phone (2a)","Nothing Phone (2)","Nothing Phone (1)"],
+      "CMF": ["CMF Phone 2 Pro","CMF Phone 1"]
+    },
+    "ASUS": {
+      "Zenfone": ["ASUS Zenfone 12 Ultra","ASUS Zenfone 11 Ultra","ASUS Zenfone 10","ASUS Zenfone 9","ASUS Zenfone 8 Flip","ASUS Zenfone 8","ASUS Zenfone 7 Pro","ASUS Zenfone 7","ASUS Zenfone 6","ASUS Zenfone 5Z","ASUS Zenfone 5","ASUS Zenfone 4 Pro","ASUS Zenfone 4","ASUS Zenfone 3 Deluxe","ASUS Zenfone 3","ASUS Zenfone 2"],
+      "ROG Phone": ["ASUS ROG Phone 9 Pro","ASUS ROG Phone 9","ASUS ROG Phone 8 Pro","ASUS ROG Phone 8","ASUS ROG Phone 7 Ultimate","ASUS ROG Phone 7","ASUS ROG Phone 6D Ultimate","ASUS ROG Phone 6D","ASUS ROG Phone 6 Pro","ASUS ROG Phone 6","ASUS ROG Phone 5s Pro","ASUS ROG Phone 5s","ASUS ROG Phone 5 Pro","ASUS ROG Phone 5","ASUS ROG Phone 3","ASUS ROG Phone II","ASUS ROG Phone" ]
+    },
+    "Sony": {
+      "Xperia 1": ["Sony Xperia 1 VII","Sony Xperia 1 VI","Sony Xperia 1 V","Sony Xperia 1 IV","Sony Xperia 1 III","Sony Xperia 1 II","Sony Xperia 1"],
+      "Xperia 5": ["Sony Xperia 5 V","Sony Xperia 5 IV","Sony Xperia 5 III","Sony Xperia 5 II","Sony Xperia 5"],
+      "Xperia 10": ["Sony Xperia 10 VII","Sony Xperia 10 VI","Sony Xperia 10 V","Sony Xperia 10 IV","Sony Xperia 10 III","Sony Xperia 10 II","Sony Xperia 10"],
+      "Xperia Pro": ["Sony Xperia Pro-I","Sony Xperia Pro"],
+      "Xperia L": ["Sony Xperia L4","Sony Xperia L3","Sony Xperia L2","Sony Xperia L1"],
+      "Xperia XZ / X": ["Sony Xperia XZ3","Sony Xperia XZ2 Premium","Sony Xperia XZ2 Compact","Sony Xperia XZ2","Sony Xperia XZ1 Compact","Sony Xperia XZ1","Sony Xperia XZ Premium","Sony Xperia XZ","Sony Xperia X Compact","Sony Xperia XZs","Sony Xperia X Performance","Sony Xperia X","Sony Xperia XA2 Ultra","Sony Xperia XA2 Plus","Sony Xperia XA2","Sony Xperia XA1 Ultra","Sony Xperia XA1 Plus","Sony Xperia XA1","Sony Xperia XA Ultra","Sony Xperia XA","Sony Xperia XZ2" ]
+    },
+    "TCL": {
+      "60 / K Series": ["TCL K70 5G","TCL K70","TCL K70 Power","TCL K70 SE","TCL 60R 5G","TCL 60 SE","TCL 60 NXTPAPER","TCL NXTPAPER 60 Ultra","TCL NXTPAPER 70 Pro"],
+      "50 Series": ["TCL 50 PRO NXTPAPER 5G","TCL 50 NXTPAPER 5G","TCL 50 5G","TCL 50 SE","TCL 50"],
+      "40 Series": ["TCL 40 NXTPAPER 5G","TCL 40 NXTPAPER","TCL 40 SE","TCL 408","TCL 405","TCL 403","TCL 40R 5G","TCL 40 X 5G"],
+      "30 Series": ["TCL 30 5G","TCL 30+","TCL 30 SE","TCL 30","TCL 30 XE 5G","TCL 30 V 5G","TCL 30 XL","TCL 30 LE"],
+      "20 Series": ["TCL 20 Pro 5G","TCL 20 5G","TCL 20 SE","TCL 20L+","TCL 20L","TCL 20S","TCL 20Y","TCL 20E","TCL 20B"],
+      "10 Series": ["TCL 10 5G UW","TCL 10 5G","TCL 10 Pro","TCL 10 Plus","TCL 10L","TCL 10 SE"],
+      "Tablets": ["TCL NXTPAPER 14","TCL NXTPAPER 11 Plus","TCL NXTPAPER 11","TCL TAB 10L Gen 4","TCL TAB A1 Plus","TCL TAB 10 Gen 2","TCL TAB 10L","TCL TAB 8" ]
+    },
+    "Alcatel": {
+      "1 Series": ["Alcatel 1V (2020)","Alcatel 1V (2019)","Alcatel 1B (2020)","Alcatel 1B (2019)","Alcatel 1S (2021)","Alcatel 1S (2020)","Alcatel 1S (2019)","Alcatel 1SE (2020)","Alcatel 1C (2019)","Alcatel 1X (2019)","Alcatel 1X (2018)","Alcatel 1 (2018)"],
+      "3 Series": ["Alcatel 3L (2021)","Alcatel 3L (2020)","Alcatel 3L (2019)","Alcatel 3X (2020)","Alcatel 3X (2019)","Alcatel 3X (2018)","Alcatel 3V","Alcatel 3","Alcatel 3C"],
+      "5 Series": ["Alcatel 5V","Alcatel 5","Alcatel 5X"],
+      "7 / 8 Series": ["Alcatel 7","Alcatel 8"],
+      "Tablets": ["Alcatel 3T 10","Alcatel 3T 8","Alcatel 1T 10","Alcatel 1T 7","Alcatel 3T 10 4G","Alcatel Joy Tab","Alcatel Joy Tab 2" ]
+    },
+    "Lenovo": {
+      "Legion Phone": ["Lenovo Legion Phone Duel 2 Pro","Lenovo Legion Phone Duel 2","Lenovo Legion Phone Duel"],
+      "K Series": ["Lenovo K14 Plus","Lenovo K14","Lenovo K13 Pro","Lenovo K13","Lenovo K12 Pro","Lenovo K12","Lenovo K10 Note","Lenovo K10","Lenovo K8 Note","Lenovo K8 Plus","Lenovo K8","Lenovo K6 Note","Lenovo K6 Power","Lenovo K6"],
+      "Tablets": ["Lenovo Legion Tab Gen 4","Lenovo Legion Tab Gen 3","Lenovo Legion Tab","Lenovo Tab Extreme","Lenovo Tab P12 Pro","Lenovo Tab P12","Lenovo Tab P11 Pro Gen 2","Lenovo Tab P11 Pro","Lenovo Tab P11 Plus","Lenovo Tab P11","Lenovo Tab M11","Lenovo Tab M10 Plus 3rd Gen","Lenovo Tab M10 Plus","Lenovo Tab M10 FHD Plus","Lenovo Tab M10 HD 2nd Gen","Lenovo Tab M10 HD","Lenovo Tab M9","Lenovo Tab M8 4th Gen","Lenovo Tab M8","Lenovo Tab M7 3rd Gen","Lenovo Tab M7","Lenovo Yoga Tab 13","Lenovo Yoga Tab 11","Lenovo Yoga Tab 3 Pro","Lenovo Yoga Smart Tab","Lenovo Tab 4 10 Plus","Lenovo Tab 4 8 Plus","Lenovo Tab 4 10","Lenovo Tab 4 8" ]
+    },
+    "Google": {
+      "Pixel": ["Google Pixel 10 Pro XL","Google Pixel 10 Pro","Google Pixel 10","Google Pixel 10a","Google Pixel 9 Pro Fold","Google Pixel 9 Pro XL","Google Pixel 9 Pro","Google Pixel 9","Google Pixel 9a","Google Pixel 8 Pro","Google Pixel 8","Google Pixel 8a","Google Pixel 7 Pro","Google Pixel 7","Google Pixel 7a","Google Pixel 6 Pro","Google Pixel 6","Google Pixel 6a","Google Pixel 5a 5G","Google Pixel 5","Google Pixel 4a 5G","Google Pixel 4a","Google Pixel 4 XL","Google Pixel 4","Google Pixel 3a XL","Google Pixel 3a","Google Pixel 3 XL","Google Pixel 3","Google Pixel 2 XL","Google Pixel 2","Google Pixel XL","Google Pixel"]
+    }
+  };
+
+  Object.keys(EXTRA_MODELS).forEach(brand => {
+    if (!BRANDS[brand]) return;
+    Object.keys(EXTRA_MODELS[brand]).forEach(category => {
+      if (!BRANDS[brand][category]) BRANDS[brand][category] = [];
+      const merged = [...BRANDS[brand][category], ...EXTRA_MODELS[brand][category]];
+      BRANDS[brand][category] = [...new Set(merged)];
+    });
+  });
+
+  /* =========================================================
+     ESTIMACIÓN DE GAMA / RAM / FPS
+     Heurística por familia + número de modelo (no es un
+     benchmark de laboratorio, es una estimación por gama).
+  ========================================================= */
+  function extractNum(name){
+    const m = name.match(/(\d{1,3})/);
+    return m ? parseInt(m[1], 10) : 0;
+  }
+
+  function tierForXiaomi(category, name){
+    const n = name.toLowerCase();
+    const num = extractNum(n);
+    let tier = 3;
+
+    if (category === "Xiaomi"){
+      if (/mix fold|mix flip/.test(n)){
+        tier = 4.7;
+      } else {
+        tier = 3.6 + Math.min(num, 17) / 17 * 1.1;
+        if (/ultra/.test(n)) tier += 0.3;
+        else if (/t pro/.test(n)) tier += 0.05;
+        else if (/pro/.test(n)) tier += 0.15;
+        else if (/t\b/.test(n)) tier -= 0.05;
+        if (/lite/.test(n)) tier -= 0.6;
+        if (/ne/.test(n)) tier -= 0.3;
+      }
+    } else if (category === "Redmi"){
+      if (/^redmi a/.test(n)){
+        tier = 1.2 + Math.min(num, 7) / 7 * 0.5;
+      } else {
+        tier = 1.6 + Math.min(num, 17) / 17 * 1.0;
+        if (/pro/.test(n)) tier += 0.3;
+        if (/c\b|c5g|c 5g/.test(n)) tier -= 0.1;
+      }
+      if (/5g/.test(n)) tier += 0.15;
+    } else if (category === "Redmi Note"){
+      tier = 2.6 + Math.min(num, 15) / 15 * 1.0;
+      if (/pro\+/.test(n)) tier += 0.7;
+      else if (/pro/.test(n)) tier += 0.45;
+      else if (/5g/.test(n)) tier += 0.1;
+    } else if (category === "POCO"){
+      if (/^poco f/.test(n)){
+        tier = 3.9 + Math.min(num, 8) / 8 * 0.8;
+        if (/ultra/.test(n)) tier += 0.3;
+        else if (/pro/.test(n)) tier += 0.15;
+        else if (/gt/.test(n)) tier += 0.2;
+      } else if (/^poco x/.test(n)){
+        tier = 2.8 + Math.min(num, 8) / 8 * 0.7;
+        if (/pro max/.test(n)) tier += 0.5;
+        else if (/pro/.test(n)) tier += 0.3;
+        else if (/gt/.test(n)) tier += 0.35;
+      } else if (/^poco m/.test(n)){
+        tier = 1.9 + Math.min(num, 8) / 8 * 0.6;
+        if (/pro/.test(n)) tier += 0.3;
+        if (/s\b/.test(n)) tier += 0.1;
+      } else if (/^poco c/.test(n)){
+        tier = 1.2 + Math.min(num, 85) / 85 * 0.5;
+      } else {
+        tier = 2.5;
+      }
+    } else if (category === "Xiaomi Pad"){
+      if (/mi pad/.test(n)){
+        tier = 2.6 + Math.min(num, 4) / 4 * 0.5;
+      } else {
+        tier = 3.3 + Math.min(num, 8) / 8 * 0.9;
+        if (/ultra/.test(n)) tier += 0.4;
+        else if (/pro/.test(n)) tier += 0.25;
+        if (/mini/.test(n)) tier -= 0.3;
+      }
+    } else if (category === "Redmi Pad"){
+      tier = 2.2;
+      if (/pro/.test(n)) tier += 0.6;
+      if (/se/.test(n)) tier -= 0.3;
+      if (num >= 2) tier += 0.2;
+    } else if (category === "POCO Pad"){
+      tier = 2.6;
+      if (/x1/.test(n)) tier += 0.3;
+      if (/c1/.test(n)) tier -= 0.2;
+    }
+
+    return Math.max(1, Math.min(5, tier));
+  }
+
+  function ordinalOrBareGen(n, keyword){
+    let m = n.match(/(\d+)\s*\.\s*ª/);
+    if (m) return parseInt(m[1], 10);
+    const re = new RegExp(keyword + '\\s+(\\d+)\\b');
+    m = n.match(re);
+    if (m) return parseInt(m[1], 10);
+    return null;
+  }
+
+  function tierForApple(category, name){
+    const n = name.toLowerCase();
+    let tier = 3;
+
+    if (category === "iPhone"){
+      if (/iphone air/.test(n)){
+        tier = 4.6;
+      } else if (/\bse\b/.test(n)){
+        const gen = ordinalOrBareGen(n, 'generación') || 1;
+        const SE_TIER = { 1: 2.9, 2: 3.93, 3: 4.25 };
+        tier = SE_TIER[gen] !== undefined ? SE_TIER[gen] : 3.5;
+      } else if (/iphone x/.test(n)){
+        if (/xs max/.test(n)) tier = 3.9;
+        else if (/xs/.test(n)) tier = 3.8;
+        else if (/xr/.test(n)) tier = 3.6;
+        else tier = 3.6;
+      } else if (/iphone 8|iphone 7/.test(n)){
+        tier = /iphone 8/.test(n) ? 3.2 : 2.8;
+        if (/plus/.test(n)) tier += 0.15;
+      } else if (/iphone 6s plus/.test(n)){
+        tier = 3.0;
+      } else if (/iphone 6s/.test(n)){
+        tier = 2.9;
+      } else if (/iphone 6 plus/.test(n)){
+        tier = 2.7;
+      } else if (/iphone 6\b/.test(n)){
+        tier = 2.6;
+      } else if (/iphone 5s/.test(n)){
+        tier = 2.4;
+      } else if (/iphone 5c/.test(n)){
+        tier = 2.1;
+      } else if (/iphone 5\b/.test(n)){
+        tier = 2.0;
+      } else if (/iphone 4s/.test(n)){
+        tier = 1.9;
+      } else if (/iphone 4\b/.test(n)){
+        tier = 1.6;
+      } else if (/iphone 3gs/.test(n)){
+        tier = 1.5;
+      } else if (/iphone 3g\b/.test(n)){
+        tier = 1.3;
+      } else {
+        const m = n.match(/iphone\s*(\d+)/);
+        const num = m ? parseInt(m[1], 10) : 12;
+        tier = 3.6 + Math.min(Math.max(num - 9, 0), 8) / 8 * 1.3;
+        if (/pro max/.test(n)) tier += 0.35;
+        else if (/pro/.test(n)) tier += 0.2;
+        else if (/plus/.test(n)) tier += 0.1;
+        else if (/mini/.test(n)) tier -= 0.15;
+        else if (/\de$/.test(n)) tier -= 0.5;
+      }
+    } else if (category === "iPad"){
+      if (/10\.5"/.test(n)){
+        tier = 4.0;
+      } else if (/9\.7"/.test(n)){
+        tier = 3.8;
+      } else if (/pro/.test(n)){
+        if (/m5|m4/.test(n)) tier = 4.9;
+        else if (/m3|m2/.test(n)) tier = 4.7;
+        else {
+          const gen = ordinalOrBareGen(n, 'pro') || 3;
+          tier = 3.8 + Math.min(gen, 6) / 6 * 0.8;
+        }
+      } else if (/air/.test(n)){
+        if (/m4|m3|m2/.test(n)) tier = 4.3;
+        else if (/air 2\b/.test(n)){
+          tier = 3.0;
+        } else {
+          const gen = ordinalOrBareGen(n, 'air') || 3;
+          tier = 3.2 + Math.min(gen, 5) / 5 * 0.7;
+          if (/\(1\.ª/.test(n)) tier = 2.8;
+        }
+      } else if (/mini/.test(n)){
+        if (/a17/.test(n)){
+          tier = 4.0;
+        } else {
+          const gen = ordinalOrBareGen(n, 'mini') || 3;
+          tier = 2.6 + Math.min(gen, 6) / 6 * 0.9;
+        }
+      } else {
+        if (/a16/.test(n)){
+          tier = 3.6;
+        } else {
+          const gen = ordinalOrBareGen(n, 'generación') || 5;
+          tier = 2.2 + Math.min(gen, 10) / 10 * 1.2;
+        }
+      }
+    }
+
+    return Math.max(1, Math.min(5, tier));
+  }
+
+  function tierForZTE(category, name){
+    const n = name.toLowerCase();
+    let tier = 3;
+    let num;
+    if (/\(2018\)/.test(n) || n.trim() === 'redmagic') num = 0;
+    else if (/mars/.test(n)) num = 1;
+    else num = extractNum(n.replace(/\b5g\b/g, '').replace(/\b4g\b/g, ''));
+    const tens = Math.floor((num % 100) / 10);
+
+    if (category === "ZTE Blade"){
+      if (/blade a/.test(n)){
+        if (num < 10) tier = 1.6;
+        else if (tens <= 3) tier = 1.8;
+        else if (tens === 5) tier = 2.3;
+        else if (tens === 6) tier = 2.5;
+        else if (tens === 7) tier = 2.7;
+        else tier = 2.0;
+        if (/5g/.test(n)) tier += 0.15;
+      } else {
+        // Blade V
+        if (tens === 3) tier = 2.6;
+        else if (tens === 4) tier = 2.9;
+        else if (tens === 5) tier = 3.1;
+        else if (tens === 6) tier = 3.3;
+        else if (tens === 7) tier = 3.6;
+        else tier = 2.8;
+        if (/max/.test(n)) tier += 0.3;
+        else if (/pro/.test(n)) tier += 0.25;
+        else if (/design/.test(n)) tier += 0.1;
+        else if (/vita/.test(n)) tier -= 0.15;
+        else if (/smart/.test(n)) tier -= 0.1;
+        else if (/lite/.test(n)) tier -= 0.3;
+      }
+    } else if (category === "ZTE Axon"){
+      if (/axon m\b/.test(n)){
+        tier = 4.0;
+      } else {
+        tier = 3.4 + Math.min(num, 60) / 60 * 1.3;
+        if (/ultra/.test(n)) tier += 0.3;
+        else if (/pro/.test(n)) tier += 0.15;
+        else if (/se\b/.test(n)) tier -= 0.2;
+        else if (/lite/.test(n)) tier -= 0.5;
+        if (/mini/.test(n)) tier -= 0.4;
+      }
+    } else if (category === "Nubia"){
+      if (/^nubia z\d/.test(n)){
+        tier = 1.3 + Math.min(num, 80) / 80 * 3.6;
+        if (/ultra/.test(n)) tier += 0.3;
+        else if (/s pro|spro/.test(n)) tier += 0.15;
+        else if (/pro/.test(n)) tier += 0.1;
+        if (/leading version/.test(n)) tier += 0.2;
+        if (/minis/.test(n)) tier -= 0.35;
+        else if (/mini/.test(n)) tier -= 0.6;
+        else if (/max/.test(n)) tier += 0.05;
+      } else if (/^nubia v\d/.test(n)){
+        if (tens === 6) tier = 3.3;
+        else if (tens === 7) tier = 3.6;
+        else if (tens === 8) tier = 3.9;
+        else tier = 3.0;
+        if (/max/.test(n)) tier += 0.3;
+        else if (/design/.test(n)) tier += 0.1;
+      } else if (/focus/.test(n)){
+        tier = 2.6;
+        if (/2 ultra/.test(n)) tier += 0.7;
+        else if (/2\b/.test(n)) tier += 0.4;
+        else if (/ultra|pro/.test(n)) tier += 0.5;
+        else if (/5g/.test(n)) tier += 0.2;
+      } else if (/neo/.test(n)){
+        tier = 2.8 + Math.min(num, 5) / 5 * 0.8;
+        if (/gt|max/.test(n)) tier += 0.4;
+        else if (/pro/.test(n)) tier += 0.25;
+      } else if (/fold/.test(n)){
+        tier = 4.6;
+      } else if (/flip/.test(n)){
+        tier = 3.7 + Math.min(num, 3) / 3 * 0.5;
+      } else if (/\bair\b/.test(n)){
+        tier = 2.7;
+        if (/pro/.test(n)) tier += 0.2;
+      } else if (/music/.test(n)){
+        tier = 1.8 + Math.min(num, 2) / 2 * 0.3;
+      } else if (/^nubia a\d/.test(n)){
+        tier = 1.4 + Math.min(num, 76) / 76 * 0.3;
+      } else {
+        tier = 2.8;
+      }
+    } else if (category === "RedMagic"){
+      tier = 3.9 + Math.min(num, 11) / 11 * 1.0;
+      if (/\+/.test(n)) tier += 0.15;
+      else if (/pro/.test(n)) tier += 0.1;
+      if (/\bair\b/.test(n)) tier -= 0.3;
+      if (/^red magic \(2018\)|^redmagic$/.test(n)) tier = 3.9;
+      else if (/mars/.test(n)) tier = 4.0;
+    } else if (category === "Tablets"){
+      if (/redmagic|nova|astra/.test(n)){
+        tier = /astra 2/.test(n) ? 4.8 : 4.5;
+      } else if (/nubia pad pro/.test(n)){
+        tier = 4.3;
+      } else {
+        tier = 2.2;
+      }
+    }
+
+    return Math.max(1, Math.min(5, tier));
+  }
+
+  function tierForMotorola(category, name){
+    const n = name.toLowerCase();
+    const num = extractNum(n.replace(/\b5g\b/g, '').replace(/\b4g\b/g, ''));
+    let tier = 3;
+
+    if (category === "Motorola Razr"){
+      if (/fold/.test(n)){
+        tier = 4.85;
+      } else if (/razr2? v/.test(n)){
+        // flip phones clásicos (2004-2008)
+        if (/v9x/.test(n)) tier = 1.3;
+        else if (/v9/.test(n)) tier = 1.25;
+        else if (/v8/.test(n)) tier = 1.2;
+        else if (/v3xx/.test(n)) tier = 1.15;
+        else if (/v3x/.test(n)) tier = 1.1;
+        else if (/v3i/.test(n)) tier = 1.05;
+        else tier = 1.0;
+      } else if (/2022/.test(n) && !/ultra/.test(n)){
+        tier = 3.4;
+      } else if (/5g/.test(name.toLowerCase()) && num === 0){
+        tier = 3.1;
+      } else if (/2019/.test(n)){
+        tier = 2.8;
+      } else {
+        tier = 3.4 + Math.max(0, (num - 40)) / 30 * 1.4;
+        if (/ultra/.test(n)) tier += 0.2;
+      }
+    } else if (category === "Motorola Edge"){
+      if (/\+/.test(n)){
+        tier = 4.2;
+        if (/2023/.test(n)) tier = 4.4;
+        else if (/2022/.test(n)) tier = 4.2;
+        else tier = 4.5;
+      } else if (/^motorola edge 20\d\d$/.test(n.trim())){
+        const YEAR_TIER = { 2021: 2.7, 2022: 3.0, 2023: 3.3, 2024: 3.7 };
+        const y = parseInt(n.match(/20\d\d/)[0], 10);
+        tier = YEAR_TIER[y] !== undefined ? YEAR_TIER[y] : 3.0;
+      } else if (num === 0){
+        tier = /uw/.test(n) ? 2.9 : 2.8;
+      } else {
+        tier = 2.6 + Math.max(0, num - 20) / 50 * 2.0;
+        if (/ultra/.test(n)) tier += 0.3;
+        else if (/pro/.test(n)) tier += 0.2;
+        else if (/stylus/.test(n)) tier += 0.1;
+        else if (/fusion/.test(n)) tier -= 0.2;
+        else if (/neo/.test(n)) tier -= 0.25;
+        else if (/lite/.test(n)) tier -= 0.3;
+      }
+    } else if (category === "Signature"){
+      tier = 4.5;
+    } else if (category === "Moto G"){
+      tier = 1.4 + Math.min(num, 90) / 90 * 2.3;
+      if (/max/.test(n)) tier += 0.3;
+      else if (/plus/.test(n)) tier += 0.15;
+      else if (/power/.test(n)) tier += 0.05;
+      else if (/optimo maxx/.test(n)) tier += 0.1;
+      else if (/play/.test(n)) tier -= 0.1;
+      else if (/fusion/.test(n)) tier -= 0.05;
+      if (/5g/.test(name.toLowerCase())) tier += 0.1;
+    } else if (category === "Moto E"){
+      tier = 1.1 + Math.min(num, 40) / 40 * 0.9;
+      if (/plus/.test(n)) tier += 0.1;
+      else if (/power/.test(n)) tier += 0.05;
+      else if (/play go/.test(n)) tier -= 0.1;
+      else if (/play/.test(n)) tier -= 0.05;
+      else if (/s\b/.test(n)) tier += 0.03;
+    } else if (category === "Moto Z"){
+      tier = 3.0 + Math.min(num, 4) / 4 * 1.0;
+      if (/play/.test(n)) tier -= 0.5;
+    } else if (category === "Moto X"){
+      if (/x4/.test(n)) tier = 3.6;
+      else if (/style/.test(n)) tier = 3.3;
+      else if (/force|pure edition/.test(n)) tier = 3.4;
+      else if (/play/.test(n)) tier = 2.8;
+      else if (/2nd gen/.test(n)) tier = 3.0;
+      else tier = 2.7;
+    } else if (category === "Moto One"){
+      tier = 2.4;
+      if (/zoom/.test(n)) tier += 0.4;
+      else if (/hyper/.test(n)) tier += 0.3;
+      else if (/fusion\+/.test(n)) tier += 0.35;
+      else if (/fusion/.test(n)) tier += 0.1;
+      else if (/5g ace|5g uw|5g/.test(n)) tier += 0.3;
+      else if (/power/.test(n)) tier += 0.15;
+      else if (/vision plus/.test(n)) tier += 0.2;
+      else if (/vision/.test(n)) tier += 0.1;
+      else if (/ace/.test(n)) tier += 0.25;
+      else if (/macro/.test(n)) tier -= 0.2;
+      else if (/action/.test(n)) tier += 0.1;
+    } else if (category === "Moto C"){
+      tier = 1.2;
+      if (/plus/.test(n)) tier += 0.1;
+    } else if (category === "Moto M"){
+      tier = 2.6;
+    } else if (category === "Clásicos"){
+      tier = 1.1;
+      if (/atrix hd|droid 4|droid razr maxx|milestone 3|razr hd|razr maxx/.test(n)) tier = 1.5;
+      else if (/droid 3|droid bionic|droid razr|atrix 2|milestone 2|razr i|razr m\b/.test(n)) tier = 1.3;
+    } else if (category === "Tablets"){
+      if (/pad 60 neo/.test(n)){
+        tier = 3.8;
+      } else if (/xoom/.test(n)){
+        tier = 1.2;
+      } else if (/tab g\d/.test(n)){
+        tier = 2.0 + Math.min(num, 75) / 75 * 1.6;
+      } else {
+        tier = 1.8;
+      }
+    }
+
+    return Math.max(1, Math.min(5, tier));
+  }
+
+  function tierForModel(brand, category, name){
+    if (brand === "Xiaomi") return tierForXiaomi(category, name);
+    if (brand === "Apple") return tierForApple(category, name);
+    if (brand === "ZTE" || brand === "RedMagic") return tierForZTE(category, name);
+    if (brand === "Motorola") return tierForMotorola(category, name);
+
+    const n = name.toLowerCase();
+    let tier = 3;
+    const num = extractNum(n);
+    const tens = Math.floor((num % 100) / 10);
+
+    if (category === "Galaxy S"){
+      tier = 4.6;
+      if (num > 0 && num <= 6) tier = 1.6;
+      else if (num <= 9) tier = 2.4;
+      else if (num <= 10) tier = 3.0;
+      if (/ultra/.test(n)) tier += 0.4;
+      if (/fe/.test(n)) tier -= 0.3;
+      if (/mini/.test(n)) tier -= 0.6;
+      if (n.trim() === "galaxy s") tier = 1.2;
+    } else if (category === "Galaxy Z"){
+      tier = 4.8;
+      if (n.trim() === "galaxy fold") tier = 4.0;
+    } else if (category === "Galaxy Note"){
+      tier = 4.4;
+      if (num <= 4) tier = 2.6;
+      else if (num <= 8) tier = 3.8;
+      else if (num <= 9) tier = 4.1;
+      if (/lite/.test(n)) tier -= 0.5;
+    } else if (category === "Galaxy A"){
+      if (num < 10) tier = 1.7;
+      else if (tens <= 1) tier = 1.9;
+      else if (tens === 2) tier = 2.3;
+      else if (tens === 3) tier = 2.7;
+      else if (tens === 4) tier = 3.1;
+      else if (tens === 5) tier = 3.7;
+      else if (tens === 6) tier = 3.7;
+      else if (tens === 7) tier = 4.0;
+      else if (tens === 8) tier = 4.2;
+      else if (tens === 9) tier = 4.4;
+      if (/5g/.test(n)) tier += 0.15;
+      if (/core/.test(n)) tier -= 0.4;
+    } else if (category === "Galaxy M"){
+      if (num < 10) tier = 1.8;
+      else if (tens <= 1) tier = 2.1;
+      else if (tens === 2) tier = 2.4;
+      else if (tens === 3) tier = 2.9;
+      else if (tens === 4) tier = 3.3;
+      else if (tens === 5) tier = 3.9;
+      else if (tens === 6) tier = 4.2;
+      else tier = 3.0;
+      if (/5g/.test(n)) tier += 0.1;
+    } else if (category === "Galaxy F"){
+      if (num < 10) tier = 1.6;
+      else if (tens <= 1) tier = 1.9;
+      else if (tens === 2) tier = 2.2;
+      else if (tens === 3) tier = 2.8;
+      else if (tens === 4) tier = 3.2;
+      else if (tens === 5) tier = 3.6;
+      else if (tens === 6) tier = 3.8;
+      else tier = 2.5;
+      if (/5g/.test(n)) tier += 0.1;
+    } else if (category === "Galaxy J"){
+      tier = 1.4;
+      if (/^j[78]/.test(n.replace("galaxy ",""))) tier = 1.9;
+      if (/pro|prime|duo/.test(n)) tier += 0.2;
+    } else if (category === "Galaxy Tab S"){
+      tier = 4.3;
+      if (/ultra/.test(n)) tier += 0.4;
+      if (/fe|lite/.test(n)) tier -= 0.6;
+      if (num > 0 && num <= 4) tier -= 1.2;
+      else if (num <= 6) tier -= 0.6;
+      else if (num <= 8) tier -= 0.2;
+    } else if (category === "Galaxy Tab A"){
+      tier = 2.2;
+      if (/\+/.test(n)) tier += 0.2;
+      if (/lite/.test(n)) tier -= 0.3;
+    } else if (category === "Galaxy Tab Active"){
+      tier = 3.0;
+      if (/pro/.test(n)) tier += 0.3;
+    } else if (category === "Galaxy Tab"){
+      tier = 1.3;
+    }
+
+    return Math.max(1, Math.min(5, tier));
+  }
+
+  function tierMeta(tier){
+    let label, color, ram;
+    if (tier < 2){ label = "Gama de entrada"; color = "var(--muted)"; ram = "2–3 GB"; }
+    else if (tier < 3){ label = "Gama baja"; color = "var(--muted)"; ram = "3–4 GB"; }
+    else if (tier < 3.8){ label = "Gama media"; color = "var(--text)"; ram = "4–6 GB"; }
+    else if (tier < 4.5){ label = "Gama alta"; color = "var(--accent)"; ram = "6–8 GB"; }
+    else { label = "Flagship"; color = "var(--accent)"; ram = "8–16 GB"; }
+
+    const fpsMin = Math.round(10 + ((tier - 1) / 4) * 32);
+    const fpsStd = Math.round(18 + ((tier - 1) / 4) * 57);
+    const fpsMax = Math.round(24 + ((tier - 1) / 4) * 96);
+    const deviceMultiplier = 0.85 + ((tier - 1) / 4) * 0.35;
+
+    return { label, color, ram, fpsMin, fpsStd, fpsMax, deviceMultiplier };
+  }
+
+  /* =========================================================
+     SENSIBILIDAD
+  ========================================================= */
+  const MAX = { general:200, reddot:130, x2:110, x4:90, awm:70, freelook:200 };
+
+  const STYLE_PROFILE = {
+    rusher:        { general:0.85, reddot:0.75, x2:0.60, x4:0.40, awm:0.35, freelook:0.80 },
+    soporte:       { general:0.65, reddot:0.60, x2:0.55, x4:0.50, awm:0.40, freelook:0.65 },
+    francotirador: { general:0.45, reddot:0.40, x2:0.35, x4:0.25, awm:0.15, freelook:0.55 }
+  };
+
+  const FINGER_MULT = {
+    '2':     { general:1.0,  reddot:0.85, x2:0.85, x4:0.85, awm:0.85, freelook:1.0  },
+    '3':     { general:1.0,  reddot:1.0,  x2:1.0,  x4:1.0,  awm:1.0,  freelook:1.0  },
+    '4':     { general:1.0,  reddot:1.1,  x2:1.1,  x4:1.1,  awm:1.1,  freelook:1.0  },
+    'garra': { general:1.05, reddot:1.2,  x2:1.2,  x4:1.2,  awm:1.2,  freelook:1.05 }
+  };
+
+  const FINGER_LABEL = { '2':'2 dedos', '3':'3 dedos', '4':'4 dedos', 'garra':'Garra (5+)' };
+  const STYLE_LABEL  = { rusher:'Rusher', soporte:'Soporte', francotirador:'Francotirador' };
+
+  const state = {
+    brand: 'Samsung',
+    category: 'Galaxy A',
+    model: 'Galaxy A55 5G',
+    deviceMultiplier: 1.0,
+    dpi: 400,
+    fingers: '3',
+    style: 'rusher'
+  };
+
+  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+  function dpiMultiplier(dpi){
+    let m = 400 / dpi;
+    if (m > 1.6) m = 1.6;
+    if (m < 0.6) m = 0.6;
+    return m;
+  }
+
+  function compute(){
+    const profile = STYLE_PROFILE[state.style];
+    const fingerM = FINGER_MULT[state.fingers];
+    const dpiM = dpiMultiplier(state.dpi);
+
+    const result = {};
+    for (const key of Object.keys(MAX)){
+      const statKey = key;
+      const base = profile[statKey] * MAX[key];
+      const val = base * fingerM[statKey] * state.deviceMultiplier * dpiM;
+      result[key] = clamp(Math.round(val), 1, MAX[key]);
+    }
+    return result;
+  }
+
+  function setGauge(id, value, max, color){
+    const el = document.getElementById(id);
+    const pct = (value / max) * 360;
+    el.style.background = `conic-gradient(${color} ${pct}deg, var(--line) ${pct}deg)`;
+    el.querySelector('.num').textContent = value;
+  }
+
+  function render(){
+    const r = compute();
+    setGauge('g-general', r.general, MAX.general, 'var(--teal)');
+    setGauge('g-reddot',  r.reddot,  MAX.reddot,  'var(--teal)');
+    setGauge('g-2x',      r.x2,      MAX.x2,      'var(--blaze)');
+    setGauge('g-4x',      r.x4,      MAX.x4,      'var(--blaze)');
+    setGauge('g-awm',     r.awm,     MAX.awm,     'var(--danger)');
+    setGauge('g-freelook',r.freelook,MAX.freelook,'var(--teal)');
+
+    document.getElementById('sumDevice').textContent = state.model + ' (' + state.brand + ')';
+    document.getElementById('sumDpi').textContent = state.dpi;
+    document.getElementById('sumFingers').textContent = FINGER_LABEL[state.fingers];
+    document.getElementById('sumStyle').textContent = STYLE_LABEL[state.style];
+
+    window._lastResult = r;
+  }
+
+  /* ---------- device card ---------- */
+  function updateDeviceCard(){
+    const meta = tierMeta(tierForModel(state.brand, state.category, state.model));
+    state.deviceMultiplier = meta.deviceMultiplier;
+
+    document.getElementById('modelName').textContent = state.model;
+    const tierLabelEl = document.getElementById('tierLabel');
+    tierLabelEl.textContent = meta.label;
+    tierLabelEl.style.background = meta.color + '22';
+    tierLabelEl.style.color = meta.color;
+    document.getElementById('ramEstimate').textContent = meta.ram;
+    document.getElementById('fpsMin').textContent = meta.fpsMin;
+    document.getElementById('fpsStd').textContent = meta.fpsStd;
+    document.getElementById('fpsMax').textContent = meta.fpsMax;
+    document.getElementById('phoneScreen').setAttribute('fill', meta.color + '33');
+
+    render();
+  }
+
+
+  /* ---------- búsqueda rápida de dispositivos ---------- */
+  const deviceSearch = document.getElementById('deviceSearch');
+  const deviceSearchResults = document.getElementById('deviceSearchResults');
+
+  function allDeviceModels(){
+    const out = [];
+    Object.keys(BRANDS).forEach(brand => {
+      const data = BRANDS[brand];
+      if (!data) return;
+      Object.keys(data).forEach(category => {
+        data[category].forEach(model => out.push({brand, category, model}));
+      });
+    });
+    return out;
+  }
+
+  const DEVICE_INDEX = allDeviceModels();
+
+  function normalizeSearch(value){
+    return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+  }
+
+  function showDeviceResults(query){
+    const q = normalizeSearch(query);
+    deviceSearchResults.innerHTML = '';
+    if (!q){
+      deviceSearchResults.classList.remove('open');
+      return;
+    }
+    const matches = DEVICE_INDEX.filter(item => normalizeSearch(item.model).includes(q) || normalizeSearch(item.brand).includes(q)).slice(0,12);
+    if (!matches.length){
+      deviceSearchResults.innerHTML = '<div class="device-search-empty">No encontramos ese dispositivo. Probá con otro nombre.</div>';
+      deviceSearchResults.classList.add('open');
+      return;
+    }
+    matches.forEach(item => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'device-search-result';
+      btn.innerHTML = '<span class="result-name"></span><span class="result-brand"></span>';
+      btn.querySelector('.result-name').textContent = item.model;
+      btn.querySelector('.result-brand').textContent = item.brand;
+      btn.addEventListener('click', () => {
+        state.brand = item.brand;
+        brandSelect.value = item.brand;
+        populateModels(item.brand);
+        modelSelect.value = item.model;
+        state.model = item.model;
+        state.category = item.category;
+        updateDeviceCard();
+        deviceSearch.value = item.model;
+        deviceSearchResults.classList.remove('open');
+      });
+      deviceSearchResults.appendChild(btn);
+    });
+    deviceSearchResults.classList.add('open');
+  }
+
+  deviceSearch.addEventListener('input', e => showDeviceResults(e.target.value));
+  deviceSearch.addEventListener('focus', e => { if(e.target.value) showDeviceResults(e.target.value); });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.device-search-wrap')) deviceSearchResults.classList.remove('open');
+  });
+
+  /* ---------- brand / model selects ---------- */
+  const brandSelect = document.getElementById('brandSelect');
+  const modelSelect = document.getElementById('modelSelect');
+  const brandNote = document.getElementById('brandNote');
+
+  Object.keys(BRANDS).forEach(b => {
+    const opt = document.createElement('option');
+    opt.value = b; opt.textContent = b;
+    brandSelect.appendChild(opt);
+  });
+  brandSelect.value = 'Samsung';
+
+  function populateModels(brand){
+    modelSelect.innerHTML = '';
+    const data = BRANDS[brand];
+
+    if (!data){
+      modelSelect.disabled = true;
+      const opt = document.createElement('option');
+      opt.textContent = 'Todavía sin modelos cargados';
+      modelSelect.appendChild(opt);
+      brandNote.textContent = 'Estamos sumando los modelos de ' + brand + '. Pasame la lista y la cargo, igual que hicimos con Samsung.';
+      state.category = null;
+      state.model = brand + ' (modelo genérico)';
+      state.deviceMultiplier = tierMeta(3).deviceMultiplier;
+      render();
+      document.getElementById('modelName').textContent = 'Sin datos de ' + brand + ' todavía';
+      document.getElementById('tierLabel').textContent = 'Estimación genérica';
+      document.getElementById('tierLabel').style.background = 'var(--line)';
+      document.getElementById('tierLabel').style.color = 'var(--muted)';
+      document.getElementById('ramEstimate').textContent = '—';
+      const gm = tierMeta(3);
+      document.getElementById('fpsMin').textContent = gm.fpsMin;
+      document.getElementById('fpsStd').textContent = gm.fpsStd;
+      document.getElementById('fpsMax').textContent = gm.fpsMax;
+      return;
+    }
+
+    modelSelect.disabled = false;
+    brandNote.textContent = '';
+    Object.keys(data).forEach(cat => {
+      const group = document.createElement('optgroup');
+      group.label = cat;
+      data[cat].forEach(model => {
+        const opt = document.createElement('option');
+        opt.value = model;
+        opt.dataset.category = cat;
+        opt.textContent = model;
+        group.appendChild(opt);
+      });
+      modelSelect.appendChild(group);
+    });
+
+    // default selection: elige un modelo representativo de gama media si existe,
+    // si no, el primero de la primera categoría de esa marca
+    const defaultByBrand = {
+      "Samsung": "Galaxy A55 5G",
+      "Xiaomi": "Redmi Note 13 Pro 5G",
+      "Apple": "iPhone 15",
+      "ZTE": "Axon 40 Pro",
+      "RedMagic": "RedMagic 10 Pro",
+      "Motorola": "Motorola Edge 50",
+      "Huawei": "HUAWEI nova 14 Pro",
+      "Honor": "HONOR 200"
+    };
+    const firstCat = Object.keys(data)[0];
+    const fallback = data[firstCat][0];
+    const preferred = defaultByBrand[brand];
+    let defaultModel = fallback, defaultCat = firstCat;
+    if (preferred){
+      for (const cat of Object.keys(data)){
+        if (data[cat].includes(preferred)){ defaultModel = preferred; defaultCat = cat; break; }
+      }
+    }
+    // Selección inicial robusta: algunos navegadores pueden no reflejar
+    // correctamente el value de un <select> recién creado dentro de <optgroup>.
+    const defaultOption = Array.from(modelSelect.options).find(opt => opt.value === defaultModel);
+    if (defaultOption) {
+      defaultOption.selected = true;
+      modelSelect.value = defaultModel;
+      if (modelSelect.selectedIndex < 0) modelSelect.selectedIndex = 0;
+    }
+    state.category = defaultCat;
+    state.model = defaultOption ? defaultOption.value : fallback;
+    updateDeviceCard();
+  }
+
+  brandSelect.addEventListener('change', (e) => {
+    state.brand = e.target.value;
+    populateModels(state.brand);
+  });
+
+  modelSelect.addEventListener('change', (e) => {
+    const opt = e.target.selectedOptions[0];
+    state.model = opt.value;
+    state.category = opt.dataset.category || state.category;
+    updateDeviceCard();
+  });
+
+  /* ---------- fingers / style chips ---------- */
+  function wireChipGroup(containerId, key, isCard){
+    const container = document.getElementById(containerId);
+    const items = container.querySelectorAll(isCard ? '.style-card' : '.chip');
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        items.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        state[key] = item.dataset.value;
+        render();
+      });
+    });
+  }
+  wireChipGroup('fingerOptions', 'fingers', false);
+  wireChipGroup('styleOptions', 'style', true);
+
+  /* ---------- dpi ---------- */
+  const dpiSlider = document.getElementById('dpiSlider');
+  dpiSlider.addEventListener('input', (e) => {
+    state.dpi = Number(e.target.value);
+    document.getElementById('dpiValue').textContent = state.dpi;
+    render();
+  });
+
+  /* ---------- copy ---------- */
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    const r = window._lastResult;
+    const text =
+`Sensibilidad Free Fire — ${STYLE_LABEL[state.style]}
+Dispositivo: ${state.model} (${state.brand}) | DPI: ${state.dpi} | Dedos: ${FINGER_LABEL[state.fingers]}
+
+General: ${r.general}
+Red Dot: ${r.reddot}
+Mira 2x: ${r.x2}
+Mira 4x: ${r.x4}
+AWM: ${r.awm}
+Free Look: ${r.freelook}`;
+
+    const btn = document.getElementById('copyBtn');
+    const done = () => {
+      btn.textContent = '¡Copiado!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copiar configuración'; btn.classList.remove('copied'); }, 1600);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+    } else {
+      fallbackCopy(text, done);
+    }
+  });
+
+  function fallbackCopy(text, cb){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    cb();
+  }
+
+  /* ---------- COMBO PREDETERMINADO ---------- */
+  const SKILLS = [
+    {id:'Andrew', name:'Andrew', desc:'Mejora la resistencia de la armadura.'},
+    {id:'Olivia', name:'Olivia', desc:'Aumenta la vida recibida por aliados al revivirlos.'},
+    {id:'Xayne', name:'Xayne', desc:'Aporta recuperación para mantenerse en combate.'},
+    {id:'Antonio', name:'Antonio', desc:'Aporta vida adicional para afrontar los duelos.'}
+  ];
+
+  const currentCombo = ['Andrew','Olivia','Xayne','Antonio'];
+  const slotLabels = ['Habilidad 1','Habilidad 2','Habilidad 3','Habilidad 4'];
+
+  function renderComboSlots(){
+    const container = document.getElementById('comboSlots');
+    if (!container) return;
+    container.innerHTML = '';
+    currentCombo.forEach((selected, index) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'skill-slot';
+      const label = document.createElement('label');
+      label.textContent = slotLabels[index];
+      const select = document.createElement('select');
+      select.disabled = true;
+      SKILLS.forEach(skill => {
+        const opt = document.createElement('option');
+        opt.value = skill.id;
+        opt.textContent = skill.name;
+        opt.title = skill.desc;
+        select.appendChild(opt);
+      });
+      select.value = selected;
+      wrap.append(label, select);
+      container.appendChild(wrap);
+    });
+  }
+
+  const tabSens = document.getElementById('tabSens');
+  const tabCombos = document.getElementById('tabCombos');
+  const sensSection = document.getElementById('sensSection');
+  const combosSection = document.getElementById('combosSection');
+  if (tabSens && tabCombos && sensSection && combosSection) {
+    tabSens.addEventListener('click', () => {
+      tabSens.classList.add('active'); tabCombos.classList.remove('active');
+      sensSection.classList.remove('is-hidden');
+      combosSection.classList.add('is-hidden');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+    tabCombos.addEventListener('click', () => {
+      tabCombos.classList.add('active'); tabSens.classList.remove('active');
+      sensSection.classList.add('is-hidden');
+      combosSection.classList.remove('is-hidden');
+      renderComboSlots();
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  }
+
+  renderComboSlots();
+
+
+
+  /* ---------- LOGIN LOCAL ---------- */
+  (function(){
+    const overlay=document.getElementById('loginOverlay');
+    const openBtn=document.getElementById('loginBtn');
+    const closeBtn=document.getElementById('loginClose');
+    const loginTab=document.getElementById('loginTab');
+    const registerTab=document.getElementById('registerTab');
+    const form=document.getElementById('accountForm');
+    const submit=document.getElementById('accountSubmit');
+    const msg=document.getElementById('loginMsg');
+    const pass=document.getElementById('accountPass');
+    let mode='login';
+    function setMode(next){
+      mode=next;
+      loginTab.classList.toggle('active',mode==='login');
+      registerTab.classList.toggle('active',mode==='register');
+      submit.textContent=mode==='login'?'Iniciar sesión':'Crear cuenta';
+      pass.autocomplete=mode==='login'?'current-password':'new-password';
+      msg.textContent='';
+    }
+    function open(){overlay.classList.add('open');document.getElementById('accountUser').focus();}
+    function close(){overlay.classList.remove('open');msg.textContent='';}
+    openBtn.addEventListener('click',open); closeBtn.addEventListener('click',close);
+    overlay.addEventListener('click',e=>{if(e.target===overlay)close();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+    loginTab.addEventListener('click',()=>setMode('login'));
+    registerTab.addEventListener('click',()=>setMode('register'));
+    form.addEventListener('submit',e=>{
+      e.preventDefault();
+      const user=document.getElementById('accountUser').value.trim();
+      const password=pass.value;
+      if(!user || password.length<4){msg.textContent='Completá los datos. La contraseña debe tener 4 caracteres o más.';return;}
+      let accounts={};
+      try{accounts=JSON.parse(localStorage.getItem('booyah_accounts')||'{}');}catch(err){accounts={};}
+      if(mode==='register'){
+        if(accounts[user]){msg.textContent='Ese usuario ya existe.';return;}
+        accounts[user]=password;
+        localStorage.setItem('booyah_accounts',JSON.stringify(accounts));
+        localStorage.setItem('booyah_logged_user',user);
+        msg.textContent='Cuenta creada correctamente ✓';
+        openBtn.textContent='LOGIN ✓';
+        setTimeout(close,650);
+      }else{
+        if(accounts[user]===password){
+          localStorage.setItem('booyah_logged_user',user);
+          msg.textContent='Sesión iniciada ✓';
+          openBtn.textContent='LOGIN ✓';
+          setTimeout(close,500);
+        }else msg.textContent='Usuario o contraseña incorrectos.';
+      }
+    });
+    const logged=localStorage.getItem('booyah_logged_user');
+    if(logged) openBtn.textContent='LOGIN ✓';
+  })();
+
+  /* ---------- ayuda: encontrar modelo ---------- */
+  (function(){
+    const overlay=document.getElementById('deviceHelpOverlay');
+    const openBtn=document.getElementById('deviceHelpBtn');
+    const closeBtn=document.getElementById('deviceHelpClose');
+    if(!overlay || !openBtn || !closeBtn) return;
+    function open(){overlay.classList.add('open');}
+    function close(){overlay.classList.remove('open');}
+    openBtn.addEventListener('click',open);
+    closeBtn.addEventListener('click',close);
+    overlay.addEventListener('click',e=>{if(e.target===overlay)close();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+  })();
+
+  /* ---------- DONACIONES ---------- */
+  document.addEventListener('DOMContentLoaded', function(){
+    const overlay=document.getElementById('donateOverlay');
+    const openBtn=document.getElementById('donateBtn');
+    const closeBtn=document.getElementById('donateClose');
+    if(!overlay || !openBtn || !closeBtn) return;
+    function open(){overlay.classList.add('open');}
+    function close(){overlay.classList.remove('open');}
+    openBtn.addEventListener('click',open);
+    closeBtn.addEventListener('click',close);
+    overlay.addEventListener('click',e=>{if(e.target===overlay)close();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+  });
+
+  function copyDonation(text, btn){
+    navigator.clipboard.writeText(text).then(()=>{const old=btn.textContent;btn.textContent='Copiado ✓';setTimeout(()=>btn.textContent=old,1200);}).catch(()=>{});
+  }
+
+  /* ---------- init ---------- */
+  // Esperamos a que el DOM esté completamente listo antes de cargar
+  // los modelos. Así el selector no aparece vacío al entrar por primera vez.
+  function initDeviceSelector(){
+    if (!brandSelect || !modelSelect) return;
+    brandSelect.value = state.brand || 'Samsung';
+    populateModels(brandSelect.value);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDeviceSelector, { once:true });
+  } else {
+    initDeviceSelector();
+  }
+</script>
+
+
+<section class="comparator-section" id="comparadorCelus">
+  <h2 class="comparator-title">📱 Comparador de celulares</h2>
+  <p class="comparator-sub">Elegí cuánto querés gastar y BooyahConfig te muestra opciones recomendadas para jugar Free Fire.</p>
+  <div class="budget-row">
+    <label for="budgetSelect">Presupuesto:</label>
+    <select id="budgetSelect">
+      <option value="250000">Hasta $250.000</option>
+      <option value="500000" selected>Hasta $500.000</option>
+      <option value="750000">Hasta $750.000</option>
+      <option value="1000000">Hasta $1.000.000</option>
+      <option value="1500000">Hasta $1.500.000</option>
+      <option value="999999999">Sin límite</option>
+    </select>
+  </div>
+  <div class="compare-grid" id="compareGrid"></div>
+  <div class="compare-note">Precios orientativos en Argentina y pueden cambiar. Los botones llevan a resultados de compra en Mercado Libre para que puedas elegir la publicación disponible.</div>
+</section>
+
+<div class="site-credit-wrap">
+  <span class="site-credit">By: noaharangoo</span>
+  <button class="donate-btn" id="donateBtn" type="button" onclick="document.getElementById('donateOverlay').classList.add('open')">DONAR</button>
+  <button class="login-btn" id="loginBtn" type="button">LOGIN</button>
+</div>
+
+<div class="donate-overlay" id="donateOverlay">
+  <div class="donate-box" role="dialog" aria-modal="true" aria-labelledby="donateTitle">
+    <button class="donate-close" id="donateClose" type="button" aria-label="Cerrar" onclick="document.getElementById('donateOverlay').classList.remove('open')">×</button>
+    <h2 id="donateTitle">APOYÁ BOOYAHCONFIG</h2>
+    <p>Si BooyahConfig te sirve y querés ayudar a mantener el proyecto, podés apoyarlo con una donación.</p>
+    <div class="vip-cta" style="text-align:left;margin-bottom:14px;"><strong>VIP:</strong> donando más de <strong>ARS $1.000</strong> obtenés un curso gratuito personalizado de optimización. Guardá el comprobante para solicitar la activación.</div>
+    <div class="donate-note" style="text-align:left;line-height:1.8;">
+      <div><strong>Mercado Pago</strong></div>
+      <div>Alias: <span>noahsalazarr</span> <button type="button" onclick="copyDonation('noahsalazarr',this)" style="float:right;cursor:pointer;">Copiar</button></div>
+      <div>CBU: <span>0000003100060620288002</span> <button type="button" onclick="copyDonation('0000003100060620288002',this)" style="float:right;cursor:pointer;">Copiar</button></div>
+      <div style="margin-top:12px;"><strong>Lemon</strong></div>
+      <div>Alias: <span>noah240404</span> <button type="button" onclick="copyDonation('noah240404',this)" style="float:right;cursor:pointer;">Copiar</button></div>
+      <div>CBU: <span>0000168300000026417116</span> <button type="button" onclick="copyDonation('0000168300000026417116',this)" style="float:right;cursor:pointer;">Copiar</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="help-overlay" id="deviceHelpOverlay">
+  <div class="help-box" role="dialog" aria-modal="true" aria-labelledby="deviceHelpTitle">
+    <div class="help-head"><h2 id="deviceHelpTitle">¿No sabés tu modelo?</h2><button class="help-close" id="deviceHelpClose" type="button" aria-label="Cerrar">×</button></div>
+    <p class="help-intro">Encontrarlo es fácil. Buscá estos datos en los ajustes de tu dispositivo:</p>
+    <div class="help-step"><strong>Android</strong><span>Ajustes → Acerca del teléfono → Modelo / Nombre del modelo.</span></div>
+    <div class="help-step"><strong>Samsung</strong><span>Ajustes → Acerca del teléfono → Nombre del modelo / Número de modelo.</span></div>
+    <div class="help-step"><strong>Xiaomi / Redmi / POCO</strong><span>Ajustes → Sobre el teléfono → Modelo / Nombre del dispositivo.</span></div>
+    <div class="help-step"><strong>iPhone</strong><span>Ajustes → General → Información → Nombre del modelo.</span></div>
+    <div class="help-tip"><strong>Consejo:</strong> copiá el nombre exacto del modelo y pegalo en la lupa de BooyahConfig para encontrarlo más rápido.</div>
+  </div>
+</div>
+
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="login-head"><h2 id="loginTitle">LOGIN</h2><button class="login-close" id="loginClose" type="button" aria-label="Cerrar">×</button></div>
+    <div class="login-tabs">
+      <button class="login-tab active" id="loginTab" type="button">Iniciar sesión</button>
+      <button class="login-tab" id="registerTab" type="button">Crear cuenta</button>
+    </div>
+    <form id="accountForm">
+      <div class="login-field"><label for="accountUser">Usuario</label><input id="accountUser" autocomplete="username" required maxlength="24"></div>
+      <div class="login-field"><label for="accountPass">Contraseña</label><input id="accountPass" type="password" autocomplete="current-password" required minlength="4" maxlength="64"></div>
+      <button class="login-submit" type="submit" id="accountSubmit">Iniciar sesión</button>
+      <div class="login-msg" id="loginMsg"></div>
+    </form>
+  </div>
+</div>
+
+<!-- Refuerzo de inicialización del selector de modelos -->
+<script>
+(function(){
+  function ensureModelsLoaded(){
+    try{
+      const brand = document.getElementById('brandSelect');
+      const model = document.getElementById('modelSelect');
+      if(!brand || !model) return;
+
+      // Si el selector quedó vacío por el orden de carga, lo poblamos de nuevo.
+      if(model.options.length === 0 && typeof populateModels === 'function'){
+        brand.value = brand.value || 'Samsung';
+        populateModels(brand.value);
+      }
+
+      // Si hay opciones pero ninguna seleccionada, seleccionamos la primera válida.
+      if(model.options.length > 0 && model.selectedIndex < 0){
+        model.selectedIndex = 0;
+      }
+    }catch(e){
+      console.warn('BooyahConfig: no se pudo inicializar el selector de modelos.', e);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', ensureModelsLoaded, {once:true});
+  }else{
+    ensureModelsLoaded();
+  }
+  window.addEventListener('load', ensureModelsLoaded, {once:true});
+  setTimeout(ensureModelsLoaded, 100);
+  setTimeout(ensureModelsLoaded, 500);
+})();
+</script>
+
+<script id="comparador-script">
+(function(){
+  const phones=[
+    {name:'Moto G06 128 GB',price:227699,meta:'4G · opción económica · ideal para uso básico y Free Fire ajustado',q:'Motorola Moto G06 128GB'},
+    {name:'Samsung Galaxy A07 128 GB',price:216399,meta:'4G · 4 GB RAM · buena opción económica',q:'Samsung Galaxy A07 128GB 4GB'},
+    {name:'Moto G15 128 GB / 8 GB',price:253499,meta:'8 GB RAM · 128 GB · buen equilibrio por el precio',q:'Motorola Moto G15 128GB 8GB'},
+    {name:'Redmi Note 15 256 GB / 8 GB',price:419999,meta:'8 GB RAM · 256 GB · pantalla AMOLED · buen salto de gama',q:'Xiaomi Redmi Note 15 8GB 256GB'},
+    {name:'POCO X7 Pro 512 GB / 12 GB',price:679031,meta:'12 GB RAM · 512 GB · muy orientado a gaming',q:'POCO X7 Pro 12GB 512GB'},
+    {name:'POCO X8 Pro 5G 512 GB / 12 GB',price:899900,meta:'12 GB RAM · 512 GB · gama alta enfocada en rendimiento',q:'POCO X8 Pro 12GB 512GB'},
+    {name:'Samsung Galaxy A57 5G',price:846729,meta:'5G · gama media/alta · buena opción equilibrada',q:'Samsung Galaxy A57 5G'},
+    {name:'Xiaomi 17T 12 GB / 512 GB',price:894400,meta:'12 GB RAM · 512 GB · alto rendimiento',q:'Xiaomi 17T 12GB 512GB'},
+    {name:'Samsung Galaxy S26 512 GB',price:2699999,meta:'5G · gama alta · opción premium',q:'Samsung Galaxy S26 512GB'}
+  ];
+  const money=n=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(n);
+  const grid=document.getElementById('compareGrid'), select=document.getElementById('budgetSelect');
+  function render(){
+    const max=Number(select.value);
+    const list=phones.filter(p=>p.price<=max).sort((a,b)=>b.price-a.price).slice(0,4);
+    grid.innerHTML=list.length?list.map(p=>`<article class="phone-card"><h3>${p.name}</h3><div class="phone-price">${money(p.price)}</div><div class="phone-meta">${p.meta}</div><a class="buy-phone" href="https://listado.mercadolibre.com.ar/${encodeURIComponent(p.q.toLowerCase().replaceAll(' ','-'))}" target="_blank" rel="noopener">Ver dónde comprar →</a></article>`).join(''):'<div class="compare-empty">No hay modelos cargados dentro de ese presupuesto.</div>';
+  }
+  if(select&&grid){select.addEventListener('change',render);render();}
+})();
+</script>
+</body>
+</html>
